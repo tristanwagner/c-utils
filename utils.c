@@ -117,7 +117,8 @@ DWORD extractBitsFromBytes(BYTE* src, DWORD pos, DWORD bits) {
 // Queue (linked list)
 
 void QInit(void *head)
-{//Free entries in queue, not head.
+{// Init the first element, head is only a placeholder that hold the queue,
+// to get the first element you will need to do head.next
     ((CQueue *)head)->next=(CQueue *)head;
     ((CQueue *)head)->last=(CQueue *)head;
 }
@@ -128,7 +129,7 @@ void QInsert(void *entry, void *pred)
     succ=((CQueue *)pred)->next;
     ((CQueue *)entry)->last=(CQueue *)pred;
     ((CQueue *)entry)->next=succ;
-    succ ->last=(CQueue *)entry;
+    succ->last=(CQueue *)entry;
     ((CQueue *)pred)->next=(CQueue *)entry;
 }
 
@@ -138,16 +139,18 @@ void QPush(void *entry, void *q)
     QInsert(entry,((CQueue *) q)->last);
 }
 
-// insert at first
+// insert at start
 void QUnshift(void *entry, void *q)
 {
     QInsert(entry, q);
 }
 
+//remove queue entry from queue
 void QRemove(void *entry)
 {
     ((CQueue *)entry)->last->next=((CQueue *)entry)->next;
     ((CQueue *)entry)->next->last=((CQueue *)entry)->last;
+    // should free here or let user do ?
 }
 
 void QWipe(void *head)
@@ -194,7 +197,7 @@ typedef struct Test {
 
 void print(void *ptr){
     Test *item = (Test *) ptr;
-    printf("value: %d\n", item->value);
+    printf("value: %d | next: %d | last: %d\n", item->value, item->next->value, item->last->value);
 }
 
 void add(void *ptr){
@@ -221,6 +224,8 @@ int main(){
 
     Test list;
     QInit(&list);
+
+    printf("%d\n", list.value);
 
     for (size_t i = 0; i < 10; i++)
     {
@@ -254,5 +259,7 @@ int main(){
     QInsert(add, list.last);
     
     printf("List item count: %d\n", QCount(&list));
+
+    QForEach(&list, print);
 
 } */
