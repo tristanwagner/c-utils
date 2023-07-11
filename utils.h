@@ -9,6 +9,24 @@ typedef unsigned char BYTE;
 typedef unsigned short WORD;
 typedef unsigned int DWORD;
 typedef unsigned char BOOL;
+typedef unsigned char boolean;
+
+typedef signed char int8;
+typedef unsigned char uint8;
+typedef signed short int16;
+typedef unsigned short uint16;
+typedef signed int int32;
+typedef unsigned int uint32;
+typedef float real32;
+typedef double real64;
+typedef signed long long int64;
+typedef unsigned long long uint64;
+
+#define DEBUG_PRINT(...) \
+    do { \
+        fprintf(stderr, "[%s:%d] ", __FILE__, __LINE__); \
+        fprintf(stderr, __VA_ARGS__); \
+    } while (0)
 
 extern int rand();
 extern int randmax(int max);

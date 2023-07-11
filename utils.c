@@ -1,4 +1,6 @@
 #include <stdio.h>
+#include <stdlib.h>
+#include <strings.h>
 #include "utils.h"
 
 int rand_seed=10;
@@ -18,7 +20,7 @@ void bubbleSort(int s, int *a)
 {
     int x,y,t;
      for (x=0; x < s-1; x++) {
-        for (y=0; y < s-x-1; y++) { 
+        for (y=0; y < s-x-1; y++) {
             if (a[y] > a[y+1]) {
                 t=a[y];
                 a[y]=a[y+1];
@@ -39,7 +41,7 @@ void* cAlloc(DWORD size) {
 // just an example on how to open a file
 void exampleFopen(){
     FILE* f;
-    if (f = fopen("filepath", "rb")){
+    if ((f = fopen("filepath", "rb"))){
         printf("fileSize: %d\n", fSize(f));
     }
 }
@@ -184,7 +186,6 @@ void QForEach(void *head, QCallback cb) {
         cb(ptr);
         ptr = ptr->next;
     }
-    
 }
 
 /*
