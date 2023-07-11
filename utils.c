@@ -3,32 +3,27 @@
 #include <strings.h>
 #include "utils.h"
 
-int rand_seed=10;
-
 // produces a random number between 0 and 32767
-int rand()
-{
-    rand_seed = rand_seed * 1103515245 + 1337;
-    return (unsigned int)(rand_seed / 65536) % 32768;
+uint32 util_rand(uint32 seed) {
+  seed = seed * 1103515245 + 1337;
+  return (uint32)(seed / 65536) % 32768;
 }
 
-int randmax(int max) {
-    return rand() % (max + 1);
+uint32 randmax(uint32 seed, uint32 max) {
+  return util_rand(seed) % (max + 1);
 }
 
-void bubbleSort(int s, int *a)
-{
-    int x,y,t;
-     for (x=0; x < s-1; x++) {
-        for (y=0; y < s-x-1; y++) {
-            if (a[y] > a[y+1]) {
-                t=a[y];
-                a[y]=a[y+1];
-                a[y+1]=t;
-            }
-        }
-     }
-
+void bubbleSort(int s, int *a) {
+  int x,y,t;
+   for (x=0; x < s-1; x++) {
+      for (y=0; y < s-x-1; y++) {
+          if (a[y] > a[y+1]) {
+              t=a[y];
+              a[y]=a[y+1];
+              a[y+1]=t;
+          }
+      }
+   }
 }
 
 // allocate mem and set to 0
@@ -40,48 +35,79 @@ void* cAlloc(DWORD size) {
 
 // just an example on how to open a file
 void exampleFopen(){
-    FILE* f;
-    if ((f = fopen("filepath", "rb"))){
-        printf("fileSize: %d\n", fSize(f));
-    }
+  FILE* f;
+  if ((f = fopen("filepath", "rb"))){
+      DEBUG_PRINT("fileSize: %d\n", fSize(f));
+  }
 }
 
 // return file size
 int fSize(FILE* f) {
-    int res, original = ftell(f);
-    fseek(f, 0, SEEK_END);
-    res = ftell(f);
-    fseek(f, original, SEEK_SET);
-    return res;
+  int res, original = ftell(f);
+  fseek(f, 0, SEEK_END);
+  res = ftell(f);
+  fseek(f, original, SEEK_SET);
+  return res;
 }
 
 void Free(void* ptr) {
-    if (ptr) free(ptr);
+  if (ptr) free(ptr);
 }
 
 // count character occurences in string
 DWORD strChOc(char* str, char ch) {
-    if (!str) return 0;
-    DWORD c = 0;
-    while (*str)
-        if (*str++ == ch)
-            c++;
-    return c;
+  if (!str) return 0;
+  DWORD c = 0;
+  while (*str)
+    if (*str++ == ch)
+      c++;
+  return c;
 }
 
 // count character occurences in string
 DWORD strLen(char* str) {
-    if (!str) return 0;
-    DWORD c = 0;
-    while (*str++)
-        c++;
-    return c;
+  if (!str) return 0;
+  DWORD c = 0;
+  while (*str++)
+    c++;
+  return c;
 }
 
 char* itoa(int value) {
-    char buffer[256];
-    sprintf(buffer, "%d\0", value);
+  static char buffer[256];
+  int i = 0;
+
+  if (value == 0) {
+    buffer[0] = '0';
+    buffer[1] = '\0';
     return buffer;
+  }
+
+  if (value < 0) {
+    buffer[i++] = '-';
+    value = -value;
+  }
+
+  while (value != 0) {
+    int digit = value % 10;
+    buffer[i++] = '0' + digit;
+    value /= 10;
+  }
+
+  buffer[i] = '\0';
+
+  int start = buffer[0] == '-' ? 1 : 0;
+  int end = i - 1;
+
+  while (start < end) {
+    char tmp = buffer[start];
+    buffer[start] = buffer[end];
+    buffer[end] = tmp;
+    start++;
+    end--;
+  }
+
+  return buffer;
 }
 
 // return bit value at index of field
@@ -100,95 +126,112 @@ int bit(int index, BYTE* field)
 // set bit to 1 if it is 0
 int bitSet(int index, BYTE *field) {
   int res;
-  field += index >> 3;
+  field += (index >> 3);
   index &= 7;
-  res = *field & (1 << index);
-  *field |= (1 << index);
+  BYTE mask = (1 << index);
+  res = *field & mask;
+  *field |= mask;
+  return (res) ? 1 : 0;
+}
+
+// set bit to 0 if it is 1
+int bitClear(int index, BYTE *field) {
+  int res;
+  field += (index >> 3);
+  index &= 7;
+  BYTE mask = ~(1 << index);
+  res = *field & mask;
+  *field &= mask;
+  return (res) ? 1 : 0;
+}
+
+int bitToggle(int index, BYTE *field) {
+  int res;
+  field += (index >> 3);
+  index &= 7;
+  BYTE mask = 1 << index;
+  res = *field & mask;
+  *field ^= mask;
   return (res) ? 1 : 0;
 }
 
 // extract bits from bytes
 DWORD extractBitsFromBytes(BYTE* src, DWORD pos, DWORD bits) {
-    DWORD i, res = 0;
-    for (i = 0; i < bits; i++)
-        if (bit(pos + i, src))
-         bitSet(i, (BYTE*) &res);
-    return res;
+  DWORD i, res = 0;
+  for (i = 0; i < bits; i++)
+    if (bit(pos + i, src))
+     bitSet(i, (BYTE*) &res);
+  return res;
 }
 
 // Queue (linked list)
 
-void QInit(void *head)
-{// Init the first element, head is only a placeholder that hold the queue,
-// to get the first element you will need to do head.next
-    ((CQueue *)head)->next=(CQueue *)head;
-    ((CQueue *)head)->last=(CQueue *)head;
+void QInit(void *head) {
+  // Init the first element, head is only a placeholder that hold the queue,
+  // to get the first element you will need to do head.next
+  ((CQueue *)head)->next=(CQueue *)head;
+  ((CQueue *)head)->last=(CQueue *)head;
 }
 
-void QInsert(void *entry, void *pred)
-{
-    CQueue *succ;
-    succ=((CQueue *)pred)->next;
-    ((CQueue *)entry)->last=(CQueue *)pred;
-    ((CQueue *)entry)->next=succ;
-    succ->last=(CQueue *)entry;
-    ((CQueue *)pred)->next=(CQueue *)entry;
+void QInsert(void *entry, void *pred) {
+  CQueue *succ;
+  succ=((CQueue *)pred)->next;
+  ((CQueue *)entry)->last=(CQueue *)pred;
+  ((CQueue *)entry)->next=succ;
+  succ->last=(CQueue *)entry;
+  ((CQueue *)pred)->next=(CQueue *)entry;
 }
 
 // insert at end
-void QPush(void *entry, void *q)
-{
-    QInsert(entry,((CQueue *) q)->last);
+void QPush(void *entry, void *q) {
+  QInsert(entry,((CQueue *) q)->last);
 }
 
 // insert at start
-void QUnshift(void *entry, void *q)
-{
-    QInsert(entry, q);
+void QUnshift(void *entry, void *q) {
+  QInsert(entry, q);
 }
 
 //remove queue entry from queue
-void QRemove(void *entry)
-{
-    ((CQueue *)entry)->last->next=((CQueue *)entry)->next;
-    ((CQueue *)entry)->next->last=((CQueue *)entry)->last;
-    // should free here or let user do ?
+void QRemove(void *entry) {
+  ((CQueue *)entry)->last->next=((CQueue *)entry)->next;
+  ((CQueue *)entry)->next->last=((CQueue *)entry)->last;
 }
 
-void QWipe(void *head)
-{//Free entries in queue, not head.
-    CQueue *tmpq=((CQueue *)head)->next,*tmpq1;
-    while (tmpq!=head) {
-        tmpq1=((CQueue *)tmpq)->next;
-        QRemove(tmpq);
-        Free(tmpq);
-        tmpq=tmpq1;
-    }
+//Free entries in queue, not head.
+void QWipe(void *head) {
+  CQueue *tmpq=((CQueue *)head)->next,*tmpq1;
+  while (tmpq!=head) {
+    tmpq1=((CQueue *)tmpq)->next;
+    QRemove(tmpq);
+    Free(tmpq);
+    tmpq=tmpq1;
+  }
 }
 
 int QCount(void *head)
-{//Count of nodes in queue, not head.
-    CQueue *tmpq=((CQueue *)head)->next;
-    int res=0;
-    while (tmpq!=head) {
-        res++;
-        tmpq=((CQueue *)tmpq)->next;
-    }
-    return res;
+{
+  //Count of nodes in queue, not head.
+  CQueue *tmpq=((CQueue *)head)->next;
+  int res=0;
+  while (tmpq!=head) {
+    res++;
+    tmpq=((CQueue *)tmpq)->next;
+  }
+  return res;
 }
 
 // for each element in queue, call callback function
 // passing pointer of current element
 void QForEach(void *head, QCallback cb) {
-    CQueue *ptr = ((CQueue *)head)->next;
-    while (ptr != head)
-    {
-        cb(ptr);
-        ptr = ptr->next;
-    }
+  CQueue *ptr = ((CQueue *)head)->next;
+  while (ptr != head)
+  {
+    cb(ptr);
+    ptr = ptr->next;
+  }
 }
 
-/*
 typedef struct Test Test;
 
 typedef struct Test {
@@ -198,7 +241,7 @@ typedef struct Test {
 
 void print(void *ptr){
     Test *item = (Test *) ptr;
-    printf("value: %d | next: %d | last: %d\n", item->value, item->next->value, item->last->value);
+    DEBUG_PRINT("value: %d | next: %d | last: %d\n", item->value, item->next->value, item->last->value);
 }
 
 void add(void *ptr){
@@ -207,26 +250,34 @@ void add(void *ptr){
 }
 
 int main(){
-    char* s = "LHELLLLLLLLLLLO";
-    printf("%s\n", s);
-    printf("%d\n", strChOc(s, 'L'));
-    printf("%d\n", bit(80, s));
-    bitSet(80, s);
-    printf("%d\n", bit(80, s));
-    bitSet(80, s);
-    printf("%d\n", bit(80, s));
-    printf("%s\n", s);
-    printf("%d\n", extractBitsFromBytes("AAA", 4, 4));
-    printf("strlen %s: %d\n", s, strLen(s));
-    printf("strlen %s: %d\n", "hello", strLen("hello"));
+    BYTE s[50];
+    snprintf(s, sizeof s, "LHELLLLLLLLLLLO");
+    DEBUG_PRINT("%s\n", s);
+    DEBUG_PRINT("%d\n", strChOc(s, 'L'));
+    DEBUG_PRINT("%d\n", bit(80, s));
+    bitSet(80, &s);
+    DEBUG_PRINT("%s\n", s);
+    DEBUG_PRINT("%d\n", bit(80, s));
+    bitClear(80, &s);
+    DEBUG_PRINT("%d\n", bit(80, s));
+    DEBUG_PRINT("%s\n", s);
+    bitToggle(80, &s);
+    DEBUG_PRINT("%d\n", bit(80, s));
+    DEBUG_PRINT("%s\n", s);
+    DEBUG_PRINT("%d\n", extractBitsFromBytes("AAA", 4, 4));
+    DEBUG_PRINT("strlen %s: %d\n", s, strLen(s));
+    DEBUG_PRINT("strlen %s: %d\n", "hello", strLen("hello"));
     int a = 3499995;
     char* t = itoa(a);
-    printf("strlen %s: %d\n", t, strLen(t));
+    DEBUG_PRINT("strlen %s: %d\n", t, strLen(t));
 
+    int b = -3499995;
+    char* tt = itoa(b);
+    DEBUG_PRINT("strlen %s: %d\n", tt, strLen(tt));
     Test list;
     QInit(&list);
 
-    printf("%d\n", list.value);
+    DEBUG_PRINT("%d\n", list.value);
 
     for (size_t i = 0; i < 10; i++)
     {
@@ -248,19 +299,19 @@ int main(){
 
     QForEach(&list, print);
 
-    printf("List item count: %d\n", QCount(&list));
-        
+    DEBUG_PRINT("List item count: %d\n", QCount(&list));
+
     QWipe(&list);
 
-    printf("List item count: %d\n", QCount(&list));
+    DEBUG_PRINT("List item count: %d\n", QCount(&list));
 
     Test *add = (Test *) malloc(sizeof(Test));
     add->value = 1;
 
     QInsert(add, list.last);
-    
-    printf("List item count: %d\n", QCount(&list));
+
+    DEBUG_PRINT("List item count: %d\n", QCount(&list));
 
     QForEach(&list, print);
 
-} */
+}

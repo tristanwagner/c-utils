@@ -1,16 +1,32 @@
 /* utils.h */
+#ifndef _UTILITY_H_
+#define _UTILITY_H_
+
 #define TRUE		1
 #define FALSE		0
 #define BYTE_MAX 	0xFF
 #define CHAR_MIN 	(-0x80)
 #define CHAR_MAX	0x7F
 
-typedef unsigned char BYTE;
-typedef unsigned short WORD;
-typedef unsigned int DWORD;
-typedef unsigned char BOOL;
-typedef unsigned char boolean;
+#ifndef NULL
+#ifdef __cplusplus
+#define NULL    0 /* Defines NULL in C++*/
+#else
+#define NULL    ((void *)0) /* Defines NULL in C*/
+#endif
+#endif
 
+#if !defined(TRUE)
+#define TRUE 1 /* Defines TRUE */
+#endif
+#if !defined(FALSE)
+#define FALSE 0 /* Defines FALSE*/
+#endif
+#if defined _WIN32
+typedef unsigned int uint;
+#else
+#include <sys/types.h>
+#endif
 typedef signed char int8;
 typedef unsigned char uint8;
 typedef signed short int16;
@@ -19,8 +35,22 @@ typedef signed int int32;
 typedef unsigned int uint32;
 typedef float real32;
 typedef double real64;
+typedef unsigned char boolean;
 typedef signed long long int64;
 typedef unsigned long long uint64;
+
+typedef unsigned char BYTE;
+typedef unsigned short WORD;
+typedef unsigned int DWORD;
+typedef unsigned char BOOL;
+typedef unsigned char boolean;
+
+// float with 64bits or 32bits precision
+#ifdef F_DOUBLE_PRECISION
+typedef double freal;
+#else
+typedef float freal;
+#endif
 
 #define DEBUG_PRINT(...) \
     do { \
@@ -28,8 +58,13 @@ typedef unsigned long long uint64;
         fprintf(stderr, __VA_ARGS__); \
     } while (0)
 
-extern int rand();
-extern int randmax(int max);
+extern uint32 util_rand(uint32 seed);
+
+#ifdef CUSTOM_RAND
+#define rand(s) util_rand(s)
+#endif
+
+extern uint32 randmax(uint32 seed, uint32 max);
 extern void bubble_sort(int, int []);
 extern void* cAlloc(DWORD size);
 extern int fSize(FILE* f);
@@ -57,3 +92,5 @@ extern void QRemove(void *entry);
 extern void QWipe(void *head);
 extern int QCount(void *head);
 extern void QForEach(void *head, QCallback cb);
+
+#endif
