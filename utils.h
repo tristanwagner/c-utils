@@ -2,6 +2,10 @@
 #ifndef _UTILITY_H_
 #define _UTILITY_H_
 
+#include <stdio.h>
+#include <stdlib.h>
+#include <strings.h>
+
 #define TRUE		1
 #define FALSE		0
 #define BYTE_MAX 	0xFF
@@ -64,6 +68,16 @@ extern uint32 util_rand(uint32 seed);
 #define rand(s) util_rand(s)
 #endif
 
+#ifdef DEBUG_MEMORY
+extern void* dbg_malloc(size_t size, char* file, int line);
+extern void* dbg_realloc(void* ptr, size_t size, char* file, int line);
+extern void dbg_free(void* ptr, char* file, int line);
+
+#define malloc(s) dbg_malloc(s, __FILE__, __LINE__)
+#define realloc(ptr, s) dbg_realloc(ptr, s, __FILE__, __LINE__)
+#define free(ptr) dbg_free(ptr, __FILE__, __LINE__)
+#endif
+
 extern uint32 randmax(uint32 seed, uint32 max);
 extern void bubble_sort(int, int []);
 extern void* cAlloc(DWORD size);
@@ -74,6 +88,8 @@ extern DWORD strLen(char* str);
 extern char* itoa(int value);
 extern int bit(int index, BYTE* field);
 extern int bitSet(int index, BYTE *field);
+extern int bitClear(int index, BYTE *field);
+extern int bitToggle(int index, BYTE *field);
 extern DWORD extractBitsFromBytes(BYTE* src, DWORD pos, DWORD bits);
 
 typedef struct CQueue CQueue;
