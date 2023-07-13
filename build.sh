@@ -1,4 +1,5 @@
 #!/bin/bash
+set -x
 # TODO: only support osx for now
 proj_name=utils
 proj_root_dir=$(pwd)
@@ -16,6 +17,7 @@ inc=(
 src=(
   ./utils.c
   ./mem.c
+  ./benchmark.c
   ./test.c
 )
 

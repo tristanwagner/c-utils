@@ -1,6 +1,4 @@
-#define DEBUG_MEMORY
 #include "utils.h"
-#include "benchmark.h"
 
 typedef struct Test Test;
 
@@ -90,7 +88,11 @@ int main(){
 
     QForEach(&list, print);
 
-    benchmark((function_entry){ .name="testBenchmark", .ptr=&testBenchmark});
+    benchmark((function_entry) {
+      .name="testBenchmark",
+      .ptr=&testBenchmark
+    });
+
     free(add);
     return 0;
 }

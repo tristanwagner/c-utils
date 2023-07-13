@@ -6,11 +6,22 @@
 #include <stdlib.h>
 #include <strings.h>
 
-#define TRUE		1
-#define FALSE		0
-#define BYTE_MAX 	0xFF
-#define CHAR_MIN 	(-0x80)
-#define CHAR_MAX	0x7F
+#include "benchmark.h"
+#include "debug.h"
+
+// TODO:
+#define DEBUG_MEMORY
+#ifdef DEBUG_MEMORY
+#include "mem.h"
+
+#define malloc(s) dbg_malloc(s, __FILE__, __LINE__)
+#define realloc(ptr, s) dbg_realloc(ptr, s, __FILE__, __LINE__)
+#define free(ptr) dbg_free(ptr, __FILE__, __LINE__)
+#endif
+
+#define BYTE_MAX  0xFF
+#define CHAR_MIN  (-0x80)
+#define CHAR_MAX  0x7F
 
 #ifndef NULL
 #ifdef __cplusplus
@@ -26,8 +37,11 @@
 #if !defined(FALSE)
 #define FALSE 0 /* Defines FALSE*/
 #endif
-#if defined _WIN32
+
+#if defined(_WIN32)
 typedef unsigned int uint;
+#elif defined(unix)
+#elif defined(__APPLE__)
 #else
 #include <sys/types.h>
 #endif
@@ -56,33 +70,16 @@ typedef double freal;
 typedef float freal;
 #endif
 
-#define DEBUG_PRINT(...) \
-    do { \
-        fprintf(stderr, "[%s:%d] ", __FILE__, __LINE__); \
-        fprintf(stderr, __VA_ARGS__); \
-    } while (0)
-
 extern uint32 util_rand(uint32 seed);
 
 #ifdef CUSTOM_RAND
 #define rand(s) util_rand(s)
 #endif
 
-#ifdef DEBUG_MEMORY
-extern void* dbg_malloc(size_t size, char* file, int line);
-extern void* dbg_realloc(void* ptr, size_t size, char* file, int line);
-extern void dbg_free(void* ptr, char* file, int line);
-
-#define malloc(s) dbg_malloc(s, __FILE__, __LINE__)
-#define realloc(ptr, s) dbg_realloc(ptr, s, __FILE__, __LINE__)
-#define free(ptr) dbg_free(ptr, __FILE__, __LINE__)
-#endif
-
 extern uint32 randmax(uint32 seed, uint32 max);
 extern void bubble_sort(int, int []);
 extern void* cAlloc(DWORD size);
 extern int fSize(FILE* f);
-extern void Free(void* ptr);
 extern DWORD strChOc(char* str, char ch);
 extern DWORD strLen(char* str);
 extern char* itoa(int value);

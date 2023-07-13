@@ -47,10 +47,6 @@ int fSize(FILE* f) {
   return res;
 }
 
-void Free(void* ptr) {
-  if (ptr) free(ptr);
-}
-
 // count character occurences in string
 DWORD strChOc(char* str, char ch) {
   if (!str) return 0;
@@ -201,7 +197,7 @@ void QWipe(void *head) {
   while (tmpq!=head) {
     tmpq1=((CQueue *)tmpq)->next;
     QRemove(tmpq);
-    Free(tmpq);
+    free(tmpq);
     tmpq=tmpq1;
   }
 }
