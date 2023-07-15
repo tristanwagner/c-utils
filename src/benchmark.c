@@ -6,8 +6,6 @@
 // will only work for macOS 10.0+
 // TODO:  what about older macs
 // apple deprecate stuff rly quick anyway
-#include <mach/mach_time.h>
-
 uint64_t getCurrentTime() {
   return mach_absolute_time();
 }
@@ -19,21 +17,20 @@ double convertToNanoseconds(uint64_t t) {
   }
   return (double)t * (double)timebase.numer / (double)timebase.denom;
 }
-#elif defined(unix)
-#include <time.h>
-#elif defined(_WIN32)
-#include <windows.h>
-#else
-  #error "Unknow os"
 #endif
 
+#if defined(_WIN32)
+static LARGE_INTEGER frequency, start, end;
+#else
+static uint64_t start, end;
+#endif
+
+static double elapsed;
+
 void benchmark(function_entry f) {
-  double elapsed;
 #if defined(__MACH__)
-  uint64_t start, end;
   start = getCurrentTime();
 #elif defined(unix)
-  uint64_t start, end;
   start = clock();
 #elif defined(__WIN32)
   LARGE_INTEGER frequency, start, end;
