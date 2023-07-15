@@ -43,6 +43,7 @@ typedef unsigned int uint;
 #elif defined(__APPLE__)
 #else
 #include <sys/types.h>
+typedef unsigned char BOOL;
 #endif
 typedef signed char int8;
 typedef unsigned char uint8;
@@ -59,7 +60,6 @@ typedef unsigned long long uint64;
 typedef unsigned char BYTE;
 typedef unsigned short WORD;
 typedef unsigned int DWORD;
-typedef bool BOOL;
 typedef unsigned char boolean;
 
 // float with 64bits or 32bits precision

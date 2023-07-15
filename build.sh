@@ -15,11 +15,7 @@ inc=(
 
 # Source files
 src=(
-  ./utils.c
-  ./mem.c
-  ./benchmark.c
-  ./queue.c
-  ./test.c
+  ./src/*.c
 )
 
 # Build
