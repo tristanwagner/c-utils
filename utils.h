@@ -59,7 +59,7 @@ typedef unsigned long long uint64;
 typedef unsigned char BYTE;
 typedef unsigned short WORD;
 typedef unsigned int DWORD;
-typedef unsigned char BOOL;
+typedef bool BOOL;
 typedef unsigned char boolean;
 
 // float with 64bits or 32bits precision
@@ -105,38 +105,50 @@ static int imina, iminb;
 #define IMIN(a, b) (imina=(a), iminb=(b), (imina) < (iminb) ?\
       (imina) : (iminb))
 
-extern void uerror(char message[]);
-extern uint32 rand_max(uint32 seed, uint32 max);
-extern void bubble_sort(int, int []);
-extern void* c_alloc(DWORD size);
-extern int f_size(FILE* f);
-extern DWORD str_ch_oc(char* str, char ch);
-extern DWORD str_len(char* str);
-extern char* itoa(int value);
-extern int bit(int index, BYTE* field);
-extern int bit_set(int index, BYTE* field);
-extern int bit_clear(int index, BYTE* field);
-extern int bit_toggle(int index, BYTE* field);
-extern DWORD extract_bits_from_bytes(BYTE* src, DWORD pos, DWORD bits);
+void uerror(char message[]);
+uint32 rand_max(uint32 seed, uint32 max);
+void bubble_sort(int, int []);
+void* c_alloc(DWORD size);
+int f_size(FILE* f);
+DWORD str_ch_oc(char* str, char ch);
+DWORD str_len(char* str);
+char* itoa(int value);
+int bit(int index, BYTE* field);
+int bit_set(int index, BYTE* field);
+int bit_clear(int index, BYTE* field);
+int bit_toggle(int index, BYTE* field);
+DWORD extract_bits_from_bytes(BYTE* src, DWORD pos, DWORD bits);
 
 // vectors
 // h high
 // l low
-extern uint8* cvector(long nl, long nh);
-extern void free_cvector(uint8* a, long nl);
-extern int* ivector(long nl, long nh);
-extern void free_ivector(int* a, long nl);
-extern long* lvector(long nl, long nh);
-extern void free_lvector(long* a, long nl);
-extern real32* vector(long nl, long nh);
-extern void free_vector(real32* a, long nl);
-extern real64* dvector(long nl, long nh);
-extern void free_dvector(real64* a, long nl);
+uint8* cvector(long nl, long nh);
+void free_cvector(uint8* a, long nl);
+int* ivector(long nl, long nh);
+void free_ivector(int* a, long nl);
+long* lvector(long nl, long nh);
+void free_lvector(long* a, long nl);
+real32* vector(long nl, long nh);
+void free_vector(real32* a, long nl);
+real64* dvector(long nl, long nh);
+void free_dvector(real64* a, long nl);
 
 // matrix
 // r row
 // c column
-extern real32** matrix(long nrl, long nrh, long ncl, long nch);
-extern void free_matrix(real32** a, long nrl, long ncl);
+real32** matrix(long nrl, long nrh, long ncl, long nch);
+void free_matrix(real32** a, long nrl, long ncl);
+real64** dmatrix(long nrl, long nrh, long ncl, long nch);
+void free_dmatrix(real64** a, long nrl, long nrh, long ncl, long nch);
+int** imatrix(long nrl, long nrh, long ncl, long nch);
+void free_imatrix(int** a, long nrl, long nrh, long ncl, long nch);
+real32** sub_matrix(real32** a, long oldnrl, long oldnrh, long oldncl,
+  long oldnch, long newnrl, long newnrh, long newncl, long newnch);
+real32** convert_matrix(real32* a, long nrl, long nrh, long ncl, long nch);
+
+// tensor
+// d depth ?
+real32*** f3tensor(long nrl, long nrh, long ncl, long nch, long ndl, long ndh);
+void free_f3tensor(real32*** a, long nrl, long nrh, long ncl, long nch, long ndl, long ndh);
 
 #endif

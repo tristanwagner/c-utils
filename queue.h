@@ -9,13 +9,13 @@ typedef struct CQueue
 } CQueue;
 typedef void (*QCallback)(void *);
 
-extern void QInit(void *head);
-extern void QInsert(void *entry, void *pred);
-extern void QPush(void *entry, void *q);
-extern void QUnshift(void *entry, void *q);
-extern void QRemove(void *entry);
-extern void QWipe(void *head);
-extern int QCount(void *head);
-extern void QForEach(void *head, QCallback cb);
+void QInit(void *head);
+void QInsert(void *entry, void *pred);
+void QPush(void *entry, void *q);
+void QUnshift(void *entry, void *q);
+void QRemove(void *entry);
+void QWipe(void *head);
+int QCount(void *head);
+void QForEach(void *head, QCallback cb);
 
 #endif

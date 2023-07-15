@@ -226,6 +226,7 @@ real32** matrix(long nrl, long nrh, long ncl, long nch) {
   if (!m) DEBUG_PRINT("failed allocation using matrix(%lg, %lg, %lg, %lg) on row level\n", nrl, nrh, ncl, nch);
   m += V_END;
   m -= nrl;
+
   m[nrl] = (real32*) malloc((size_t) ((nrow * ncol + V_END) * sizeof(real32)));
   if (!m[nrl]) DEBUG_PRINT("failed allocation using matrix(%lg, %lg, %lg, %lg) on col level\n", nrl, nrh, ncl, nch);
   m[nrl] += V_END;

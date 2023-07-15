@@ -8,9 +8,9 @@ typedef struct {
 } function_entry;
 
 #if defined(__MACH__)
-extern uint64_t getCurrentTime();
-extern double convertToNanoseconds(uint64_t t);
+uint64_t getCurrentTime();
+double convertToNanoseconds(uint64_t t);
 #endif
 
-extern void benchmark(function_entry f);
+void benchmark(function_entry f);
 #endif
