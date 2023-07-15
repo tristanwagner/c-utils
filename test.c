@@ -27,27 +27,30 @@ int main(){
     BYTE s[50];
     snprintf(s, sizeof s, "LHELLLLLLLLLLLO");
     DEBUG_PRINT("%s\n", s);
-    DEBUG_PRINT("%d\n", strChOc(s, 'L'));
+    DEBUG_PRINT("%d\n", str_ch_oc(s, 'L'));
     DEBUG_PRINT("%d\n", bit(80, s));
-    bitSet(80, &s);
+    bit_set(80, &s);
     DEBUG_PRINT("%s\n", s);
     DEBUG_PRINT("%d\n", bit(80, s));
-    bitClear(80, &s);
+    bit_clear(80, &s);
     DEBUG_PRINT("%d\n", bit(80, s));
     DEBUG_PRINT("%s\n", s);
-    bitToggle(80, &s);
+    bit_toggle(80, &s);
     DEBUG_PRINT("%d\n", bit(80, s));
     DEBUG_PRINT("%s\n", s);
-    DEBUG_PRINT("%d\n", extractBitsFromBytes("AAA", 4, 4));
-    DEBUG_PRINT("strlen %s: %d\n", s, strLen(s));
-    DEBUG_PRINT("strlen %s: %d\n", "hello", strLen("hello"));
+    bit_toggle(80, &s);
+    DEBUG_PRINT("%d\n", bit(80, s));
+    DEBUG_PRINT("%s\n", s);
+    DEBUG_PRINT("%d\n", extract_bits_from_bytes("AAA", 0, 8));
+    DEBUG_PRINT("strlen %s: %d\n", s, str_len(s));
+    DEBUG_PRINT("strlen %s: %d\n", "hello", str_len("hello"));
     int a = 3499995;
     char* t = itoa(a);
-    DEBUG_PRINT("strlen %s: %d\n", t, strLen(t));
+    DEBUG_PRINT("strlen %s: %d\n", t, str_len(t));
 
     int b = -3499995;
     char* tt = itoa(b);
-    DEBUG_PRINT("strlen %s: %d\n", tt, strLen(tt));
+    DEBUG_PRINT("strlen %s: %d\n", tt, str_len(tt));
     Test list;
     QInit(&list);
 
@@ -88,12 +91,51 @@ int main(){
 
     QForEach(&list, print);
 
+    free(add);
+
     benchmark((function_entry) {
       .name="testBenchmark",
       .ptr=&testBenchmark
     });
 
-    free(add);
+    DEBUG_PRINT("SQR: %.2f\n", SQR(5.0));
+
+    DEBUG_PRINT("FMAX: %.2f\n", FMAX(5.0, 15.0));
+
+    DEBUG_PRINT("FMIN: %.2f\n", FMIN(5.0, 15.0));
+
+    DEBUG_PRINT("DSQR: %.2f\n", DSQR(5.0));
+
+    DEBUG_PRINT("DMAX: %.2f\n", DMAX(5.0, 15.0));
+
+    DEBUG_PRINT("DMIN: %.2f\n", DMIN(5.0, 15.0));
+
+    DEBUG_PRINT("LMAX: %d\n", LMAX(5, 15));
+
+    DEBUG_PRINT("LMIN: %d\n", LMIN(5, 15));
+
+    DEBUG_PRINT("IMAX: %d\n", IMAX(-5, -15));
+
+    DEBUG_PRINT("IMIN: %d\n", IMIN(-5, -15));
+
+    uint8* v1 = cvector(1, 10);
+    free_cvector(v1, 1);
+
+    int* v2 = ivector(1, 10);
+    free_ivector(v2, 1);
+
+    real32* v3 = vector(1, 20);
+    free_vector(v3, 1);
+
+    real64* v4 = dvector(1, 20);
+    free_dvector(v4, 1);
+
+    real32** m = matrix(0, 20, 0, 20);
+    m[0][0] = 420.69;
+    DEBUG_PRINT("TEST: %.2f\n", m[0][0]);
+    free_matrix(m, 0, 0);
+
+
     return 0;
 }
 

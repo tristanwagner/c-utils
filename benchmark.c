@@ -2,10 +2,10 @@
 #include "benchmark.h"
 
 //TODO: test unix & windows
-
 #if defined(__MACH__)
-// will only work for mac m1+
+// will only work for macOS 10.0+
 // TODO:  what about older macs
+// apple deprecate stuff rly quick anyway
 #include <mach/mach_time.h>
 
 uint64_t getCurrentTime() {
@@ -23,15 +23,6 @@ double convertToNanoseconds(uint64_t t) {
 #include <time.h>
 #elif defined(_WIN32)
 #include <windows.h>
-    LARGE_INTEGER frequency;
-    LARGE_INTEGER start;
-    LARGE_INTEGER end;
-    double interval;
-
-    QueryPerformanceFrequency(&frequency);
-    QueryPerformanceCounter(&start);include <windows.h>
-    QueryPerformanceCounter(&end);
-    interval = (double) (end.QuadPart - start.QuadPart) / frequency.QuadPart;
 #else
   #error "Unknow os"
 #endif

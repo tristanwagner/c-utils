@@ -18,6 +18,7 @@ src=(
   ./utils.c
   ./mem.c
   ./benchmark.c
+  ./queue.c
   ./test.c
 )
 

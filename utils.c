@@ -6,11 +6,11 @@ uint32 util_rand(uint32 seed) {
   return (uint32)(seed / 65536) % 32768;
 }
 
-uint32 randmax(uint32 seed, uint32 max) {
+uint32 rand_max(uint32 seed, uint32 max) {
   return util_rand(seed) % (max + 1);
 }
 
-void bubbleSort(int s, int *a) {
+void bubble_sort(int s, int* a) {
   int x,y,t;
    for (x=0; x < s-1; x++) {
       for (y=0; y < s-x-1; y++) {
@@ -24,22 +24,22 @@ void bubbleSort(int s, int *a) {
 }
 
 // allocate mem and set to 0
-void* cAlloc(DWORD size) {
+void* c_alloc(DWORD size) {
   BYTE* res = (BYTE*) malloc(size);
   memset(res, 0, size);
   return res;
 }
 
 // just an example on how to open a file
-void exampleFopen(){
+void example_fopen(){
   FILE* f;
   if ((f = fopen("filepath", "rb"))){
-      DEBUG_PRINT("fileSize: %d\n", fSize(f));
+      DEBUG_PRINT("fileSize: %d\n", f_size(f));
   }
 }
 
 // return file size
-int fSize(FILE* f) {
+int f_size(FILE* f) {
   int res, original = ftell(f);
   fseek(f, 0, SEEK_END);
   res = ftell(f);
@@ -48,7 +48,7 @@ int fSize(FILE* f) {
 }
 
 // count character occurences in string
-DWORD strChOc(char* str, char ch) {
+DWORD str_ch_oc(char* str, char ch) {
   if (!str) return 0;
   DWORD c = 0;
   while (*str)
@@ -58,7 +58,7 @@ DWORD strChOc(char* str, char ch) {
 }
 
 // count character occurences in string
-DWORD strLen(char* str) {
+DWORD str_len(char* str) {
   if (!str) return 0;
   DWORD c = 0;
   while (*str++)
@@ -117,7 +117,7 @@ int bit(int index, BYTE* field)
 }
 
 // set bit to 1 if it is 0
-int bitSet(int index, BYTE *field) {
+int bit_set(int index, BYTE *field) {
   int res;
   field += (index >> 3);
   index &= 7;
@@ -128,7 +128,7 @@ int bitSet(int index, BYTE *field) {
 }
 
 // set bit to 0 if it is 1
-int bitClear(int index, BYTE *field) {
+int bit_clear(int index, BYTE *field) {
   int res;
   field += (index >> 3);
   index &= 7;
@@ -138,7 +138,7 @@ int bitClear(int index, BYTE *field) {
   return (res) ? 1 : 0;
 }
 
-int bitToggle(int index, BYTE *field) {
+int bit_toggle(int index, BYTE *field) {
   int res;
   field += (index >> 3);
   index &= 7;
@@ -149,78 +149,95 @@ int bitToggle(int index, BYTE *field) {
 }
 
 // extract bits from bytes
-DWORD extractBitsFromBytes(BYTE* src, DWORD pos, DWORD bits) {
+DWORD extract_bits_from_bytes(BYTE* src, DWORD pos, DWORD bits) {
   DWORD i, res = 0;
   for (i = 0; i < bits; i++)
     if (bit(pos + i, src))
-     bitSet(i, (BYTE*) &res);
+     bit_set(i, (BYTE*) &res);
   return res;
 }
 
-// Queue (linked list)
+// vectors
+#define V_END 1
+#define FREE_ARG char*
 
-void QInit(void *head) {
-  // Init the first element, head is only a placeholder that hold the queue,
-  // to get the first element you will need to do head.next
-  ((CQueue *)head)->next=(CQueue *)head;
-  ((CQueue *)head)->last=(CQueue *)head;
+uint8* cvector(long nl, long nh){
+  uint8* v;
+  v = (uint8*) malloc((size_t) ((nh - nl + 1 + V_END)* sizeof(uint8)));
+  if (!v) DEBUG_PRINT("failed allocation using cvector(%lg, %lg)\n", nl, nh);
+  return v;
+};
+
+void free_cvector(uint8* a, long nl) {
+  free((FREE_ARG) a+nl-V_END);
+};
+
+int* ivector(long nl, long nh){
+  int* v;
+  v = (int*) malloc((size_t) ((nh - nl + 1 + V_END)* sizeof(int)));
+  if (!v) DEBUG_PRINT("failed allocation using ivector(%lg, %lg)\n", nl, nh);
+  return v;
+};
+
+void free_ivector(int* a, long nl) {
+  free((FREE_ARG) a+nl-V_END);
+};
+
+long* lvector(long nl, long nh){
+  long* v;
+  v = (long*) malloc((size_t) ((nh - nl + 1 + V_END)* sizeof(long)));
+  if (!v) DEBUG_PRINT("failed allocation using lvector(%lg, %lg)\n", nl, nh);
+  return v;
+};
+
+void free_lvector(long* a, long nl) {
+  free((FREE_ARG) a+nl-V_END);
+};
+
+real32* vector(long nl, long nh) {
+  real32* v;
+  v = (real32*) malloc((size_t) ((nh - nl + 1 + V_END)* sizeof(real32)));
+  if (!v) DEBUG_PRINT("failed allocation using vector(%lg, %lg)\n", nl, nh);
+  return v;
+};
+
+void free_vector(real32* a, long nl) {
+  free((FREE_ARG) a+nl-V_END);
+};
+
+real64* dvector(long nl, long nh) {
+  real64* v;
+  v = (real64*) malloc((size_t) ((nh - nl + 1 + V_END)* sizeof(real64)));
+  if (!v) DEBUG_PRINT("failed allocation using dvector(%lg, %lg)\n", nl, nh);
+  return v;
+};
+
+void free_dvector(real64* a, long nl) {
+  free((FREE_ARG) a+nl-V_END);
+};
+
+// matrix
+
+real32** matrix(long nrl, long nrh, long ncl, long nch) {
+  long i, nrow = nrh - nrl + 1, ncol = nch - ncl + 1;
+  real32** m;
+
+  m = (real32**) malloc((size_t) ((nrow + V_END) * sizeof(real32*)));
+  if (!m) DEBUG_PRINT("failed allocation using matrix(%lg, %lg, %lg, %lg) on row level\n", nrl, nrh, ncl, nch);
+  m += V_END;
+  m -= nrl;
+  m[nrl] = (real32*) malloc((size_t) ((nrow * ncol + V_END) * sizeof(real32)));
+  if (!m[nrl]) DEBUG_PRINT("failed allocation using matrix(%lg, %lg, %lg, %lg) on col level\n", nrl, nrh, ncl, nch);
+  m[nrl] += V_END;
+  m[nrl] -= ncl;
+
+  for (i = nrl + 1;i <= nrh;i++) m[i] = m[i-1] + ncol;
+
+  return m;
 }
 
-void QInsert(void *entry, void *pred) {
-  CQueue *succ;
-  succ=((CQueue *)pred)->next;
-  ((CQueue *)entry)->last=(CQueue *)pred;
-  ((CQueue *)entry)->next=succ;
-  succ->last=(CQueue *)entry;
-  ((CQueue *)pred)->next=(CQueue *)entry;
-}
+void free_matrix(real32** a, long nrl, long ncl) {
+  free((FREE_ARG) (a[nrl] + ncl - V_END));
+  free((FREE_ARG) (a + nrl - V_END));
+};
 
-// insert at end
-void QPush(void *entry, void *q) {
-  QInsert(entry,((CQueue *) q)->last);
-}
-
-// insert at start
-void QUnshift(void *entry, void *q) {
-  QInsert(entry, q);
-}
-
-//remove queue entry from queue
-void QRemove(void *entry) {
-  ((CQueue *)entry)->last->next=((CQueue *)entry)->next;
-  ((CQueue *)entry)->next->last=((CQueue *)entry)->last;
-}
-
-//Free entries in queue, not head.
-void QWipe(void *head) {
-  CQueue *tmpq=((CQueue *)head)->next,*tmpq1;
-  while (tmpq!=head) {
-    tmpq1=((CQueue *)tmpq)->next;
-    QRemove(tmpq);
-    free(tmpq);
-    tmpq=tmpq1;
-  }
-}
-
-int QCount(void *head)
-{
-  //Count of nodes in queue, not head.
-  CQueue *tmpq=((CQueue *)head)->next;
-  int res=0;
-  while (tmpq!=head) {
-    res++;
-    tmpq=((CQueue *)tmpq)->next;
-  }
-  return res;
-}
-
-// for each element in queue, call callback function
-// passing pointer of current element
-void QForEach(void *head, QCallback cb) {
-  CQueue *ptr = ((CQueue *)head)->next;
-  while (ptr != head)
-  {
-    cb(ptr);
-    ptr = ptr->next;
-  }
-}
