@@ -2,16 +2,10 @@
 
 ## build
 
-Windows (Needs update & testing)
+OSX
 
 ```
-tcc .\utils.c -o a.exe
-```
-
-Unix (only tested on osx)
-
-```
-./build.sh
+./build/osx/build.sh
 ```
 
 ## sources
