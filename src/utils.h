@@ -8,6 +8,7 @@
 #include "benchmark.h"
 #include "debug.h"
 #include "queue.h"
+#include "task.h"
 
 // TODO:
 #define DEBUG_MEMORY
@@ -113,11 +114,12 @@ int f_size(FILE* f);
 DWORD str_ch_oc(char* str, char ch);
 DWORD str_len(char* str);
 char* itoa(int value);
+int atoi(const char* s);
 int bit(int index, BYTE* field);
 int bit_set(int index, BYTE* field);
 int bit_clear(int index, BYTE* field);
 int bit_toggle(int index, BYTE* field);
-DWORD extract_bits_from_bytes(BYTE* src, DWORD pos, DWORD bits);
+DWORD extract_bits_from_bytes(const BYTE* src, DWORD pos, DWORD bits);
 
 // vectors
 // h high

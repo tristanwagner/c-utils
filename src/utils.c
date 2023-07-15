@@ -103,6 +103,18 @@ char* itoa(int value) {
   return buffer;
 }
 
+// TODO: support negative numbers
+int atoi(const char* s)
+{
+  int n = 0;
+  while (1) {
+    char c = *s++;
+    if (!c) break;
+    n = 10 * n + (c - '0');
+  }
+  return n;
+}
+
 // return bit value at index of field
 int bit(int index, BYTE* field)
 {
@@ -149,7 +161,7 @@ int bit_toggle(int index, BYTE *field) {
 }
 
 // extract bits from bytes
-DWORD extract_bits_from_bytes(BYTE* src, DWORD pos, DWORD bits) {
+DWORD extract_bits_from_bytes(const BYTE* src, DWORD pos, DWORD bits) {
   DWORD i, res = 0;
   for (i = 0; i < bits; i++)
     if (bit(pos + i, src))

@@ -1,5 +1,7 @@
 #include "utils.h"
 
+// TODO: introduce unit tests instead of this mess
+
 typedef struct Test Test;
 
 typedef struct Test {
@@ -21,6 +23,43 @@ void testBenchmark() {
     Test list;
     QInit(&list);
     QForEach(&list, add);
+}
+
+void testingSub1(){
+  TASK_INIT();
+  printf("A");
+  TASK_YIELD();
+  printf("B");
+  TASK_YIELD();
+  printf("C");
+  TASK_END();
+}
+void testingSub2(){
+  TASK_INIT();
+  printf("1");
+  TASK_YIELD();
+  printf("2");
+  TASK_YIELD();
+  printf("3");
+  TASK_YIELD();
+  printf("4");
+  TASK_END();
+}
+
+void testingSub3(){
+  TASK_INIT();
+  while(1){
+    printf("*");
+    TASK_YIELD();
+  }
+  TASK_END();
+}
+
+void testingTasks(){
+  testingSub1();
+  testingSub2();
+  testingSub3();
+  printf("\n");
 }
 
 int main(){
@@ -47,6 +86,10 @@ int main(){
     int a = 3499995;
     char* t = itoa(a);
     DEBUG_PRINT("strlen %s: %d\n", t, str_len(t));
+
+    char sa[] = "3499995";
+    int st = atoi(sa);
+    DEBUG_PRINT("atoi: %d\n", st);
 
     int b = -3499995;
     char* tt = itoa(b);
@@ -135,6 +178,13 @@ int main(){
     DEBUG_PRINT("TEST: %.2f\n", m[0][0]);
     free_matrix(m, 0, 0);
 
+    int itask = 10;
+
+    DEBUG_PRINT("TASKS:\n");
+    while (itask > 0) {
+      testingTasks();
+      itask--;
+    }
 
     return 0;
 }
