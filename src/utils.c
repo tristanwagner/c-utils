@@ -1,45 +1,22 @@
 #include "utils.h"
 
-// produces a random number between 0 and 32767
-uint32 util_rand(uint32 seed) {
-  seed = seed * 1103515245 + 1337;
-  return (uint32)(seed / 65536) % 32768;
-}
-
-uint32 rand_max(uint32 seed, uint32 max) {
-  return util_rand(seed) % (max + 1);
-}
-
-void bubble_sort(int s, int* a) {
-  int x,y,t;
-   for (x=0; x < s-1; x++) {
-      for (y=0; y < s-x-1; y++) {
-          if (a[y] > a[y+1]) {
-              t=a[y];
-              a[y]=a[y+1];
-              a[y+1]=t;
-          }
-      }
-   }
-}
-
 // allocate mem and set to 0
-void* c_alloc(DWORD size) {
-  BYTE* res = (BYTE*) malloc(size);
+void *c_alloc(DWORD size) {
+  BYTE *res = (BYTE *)malloc(size);
   memset(res, 0, size);
   return res;
 }
 
 // just an example on how to open a file
-void example_fopen(){
-  FILE* f;
-  if ((f = fopen("filepath", "rb"))){
-      DEBUG_PRINT("fileSize: %d\n", f_size(f));
+void example_fopen() {
+  FILE *f;
+  if ((f = fopen("filepath", "rb"))) {
+    DEBUG_PRINT("fileSize: %d\n", f_size(f));
   }
 }
 
 // return file size
-int f_size(FILE* f) {
+int f_size(FILE *f) {
   int res, original = ftell(f);
   fseek(f, 0, SEEK_END);
   res = ftell(f);
@@ -48,8 +25,9 @@ int f_size(FILE* f) {
 }
 
 // count character occurences in string
-DWORD str_ch_oc(char* str, char ch) {
-  if (!str) return 0;
+DWORD str_ch_oc(char *str, char ch) {
+  if (!str)
+    return 0;
   DWORD c = 0;
   while (*str)
     if (*str++ == ch)
@@ -58,15 +36,16 @@ DWORD str_ch_oc(char* str, char ch) {
 }
 
 // count character occurences in string
-DWORD str_len(char* str) {
-  if (!str) return 0;
+DWORD str_len(char *str) {
+  if (!str)
+    return 0;
   DWORD c = 0;
   while (*str++)
     c++;
   return c;
 }
 
-char* itoa(int value) {
+char *itoa(int value) {
   static char buffer[256];
   int i = 0;
 
@@ -104,20 +83,19 @@ char* itoa(int value) {
 }
 
 // TODO: support negative numbers
-int atoi(const char* s)
-{
+int atoi(const char *s) {
   int n = 0;
   while (1) {
     char c = *s++;
-    if (!c) break;
+    if (!c)
+      break;
     n = 10 * n + (c - '0');
   }
   return n;
 }
 
 // return bit value at index of field
-int bit(int index, BYTE* field)
-{
+int bit(int index, BYTE *field) {
   // get field to the byte containing the bit we are looking for
   // we shift index 3 bits to the right to get the offset for the
   // byte we want
@@ -161,96 +139,10 @@ int bit_toggle(int index, BYTE *field) {
 }
 
 // extract bits from bytes
-DWORD extract_bits_from_bytes(const BYTE* src, DWORD pos, DWORD bits) {
+DWORD extract_bits_from_bytes(const BYTE *src, DWORD pos, DWORD bits) {
   DWORD i, res = 0;
   for (i = 0; i < bits; i++)
     if (bit(pos + i, src))
-     bit_set(i, (BYTE*) &res);
+      bit_set(i, (BYTE *)&res);
   return res;
 }
-
-// vectors
-#define V_END 1
-#define FREE_ARG char*
-
-uint8* cvector(long nl, long nh){
-  uint8* v;
-  v = (uint8*) malloc((size_t) ((nh - nl + 1 + V_END)* sizeof(uint8)));
-  if (!v) DEBUG_PRINT("failed allocation using cvector(%lg, %lg)\n", nl, nh);
-  return v;
-};
-
-void free_cvector(uint8* a, long nl) {
-  free((FREE_ARG) a+nl-V_END);
-};
-
-int* ivector(long nl, long nh){
-  int* v;
-  v = (int*) malloc((size_t) ((nh - nl + 1 + V_END)* sizeof(int)));
-  if (!v) DEBUG_PRINT("failed allocation using ivector(%lg, %lg)\n", nl, nh);
-  return v;
-};
-
-void free_ivector(int* a, long nl) {
-  free((FREE_ARG) a+nl-V_END);
-};
-
-long* lvector(long nl, long nh){
-  long* v;
-  v = (long*) malloc((size_t) ((nh - nl + 1 + V_END)* sizeof(long)));
-  if (!v) DEBUG_PRINT("failed allocation using lvector(%lg, %lg)\n", nl, nh);
-  return v;
-};
-
-void free_lvector(long* a, long nl) {
-  free((FREE_ARG) a+nl-V_END);
-};
-
-real32* vector(long nl, long nh) {
-  real32* v;
-  v = (real32*) malloc((size_t) ((nh - nl + 1 + V_END)* sizeof(real32)));
-  if (!v) DEBUG_PRINT("failed allocation using vector(%lg, %lg)\n", nl, nh);
-  return v;
-};
-
-void free_vector(real32* a, long nl) {
-  free((FREE_ARG) a+nl-V_END);
-};
-
-real64* dvector(long nl, long nh) {
-  real64* v;
-  v = (real64*) malloc((size_t) ((nh - nl + 1 + V_END)* sizeof(real64)));
-  if (!v) DEBUG_PRINT("failed allocation using dvector(%lg, %lg)\n", nl, nh);
-  return v;
-};
-
-void free_dvector(real64* a, long nl) {
-  free((FREE_ARG) a+nl-V_END);
-};
-
-// matrix
-
-real32** matrix(long nrl, long nrh, long ncl, long nch) {
-  long i, nrow = nrh - nrl + 1, ncol = nch - ncl + 1;
-  real32** m;
-
-  m = (real32**) malloc((size_t) ((nrow + V_END) * sizeof(real32*)));
-  if (!m) DEBUG_PRINT("failed allocation using matrix(%lg, %lg, %lg, %lg) on row level\n", nrl, nrh, ncl, nch);
-  m += V_END;
-  m -= nrl;
-
-  m[nrl] = (real32*) malloc((size_t) ((nrow * ncol + V_END) * sizeof(real32)));
-  if (!m[nrl]) DEBUG_PRINT("failed allocation using matrix(%lg, %lg, %lg, %lg) on col level\n", nrl, nrh, ncl, nch);
-  m[nrl] += V_END;
-  m[nrl] -= ncl;
-
-  for (i = nrl + 1;i <= nrh;i++) m[i] = m[i-1] + ncol;
-
-  return m;
-}
-
-void free_matrix(real32** a, long nrl, long ncl) {
-  free((FREE_ARG) (a[nrl] + ncl - V_END));
-  free((FREE_ARG) (a + nrl - V_END));
-};
-

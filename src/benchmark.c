@@ -1,14 +1,12 @@
-#include "debug.h"
 #include "benchmark.h"
+#include "debug.h"
 
-//TODO: test unix & windows
+// TODO: test unix & windows
 #if defined(__MACH__)
 // will only work for macOS 10.0+
 // TODO:  what about older macs
 // apple deprecate stuff rly quick anyway
-uint64_t getCurrentTime() {
-  return mach_absolute_time();
-}
+uint64_t getCurrentTime() { return mach_absolute_time(); }
 
 double convertToNanoseconds(uint64_t t) {
   static mach_timebase_info_data_t timebase;
@@ -41,14 +39,17 @@ void benchmark(function_entry f) {
 #if defined(__MACH__)
   end = getCurrentTime();
   elapsed = convertToNanoseconds(end - start);
-  DEBUG_PRINT("Elapsed time calling function \"%s\": %.2f ns\n", f.name, elapsed);
+  DEBUG_PRINT("Elapsed time calling function \"%s\": %.2f ns\n", f.name,
+              elapsed);
 #elif defined(unix)
   end = clock();
   elapsed = (double)(end - start);
-  DEBUG_PRINT("Elapsed time calling function \"%s\": %.2f ms\n", f.name, elapsed);
+  DEBUG_PRINT("Elapsed time calling function \"%s\": %.2f ms\n", f.name,
+              elapsed);
 #elif defined(__WIN32)
   QueryPerformanceCounter(&end);
-  elapsed = (double) (end.QuadPart - start.QuadPart) / frequency.QuadPart;
-  DEBUG_PRINT("Elapsed time calling function \"%s\": %.2f s\n", f.name, elapsed);
+  elapsed = (double)(end.QuadPart - start.QuadPart) / frequency.QuadPart;
+  DEBUG_PRINT("Elapsed time calling function \"%s\": %.2f s\n", f.name,
+              elapsed);
 #endif
 }

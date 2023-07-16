@@ -1,6 +1,8 @@
 #ifndef _QUEUE_H_
 #define _QUEUE_H_
 
+#include "mem.h"
+
 typedef struct CQueue CQueue;
 typedef struct CQueue
 {
