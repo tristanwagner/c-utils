@@ -5,22 +5,14 @@
 #include <stdlib.h>
 #include <strings.h>
 
+#define DEBUG_MEMORY
+#include "dbg_mem.h"
 #include "types.h"
 #include "benchmark.h"
 #include "debug.h"
 #include "queue.h"
 #include "task.h"
 #include "math.h"
-
-// TODO:
-#define DEBUG_MEMORY
-#ifdef DEBUG_MEMORY
-#include "mem.h"
-
-#define malloc(s) dbg_malloc(s, __FILE__, __LINE__)
-#define realloc(ptr, s) dbg_realloc(ptr, s, __FILE__, __LINE__)
-#define free(ptr) dbg_free(ptr, __FILE__, __LINE__)
-#endif
 
 void uerror(char message[]);
 void* c_alloc(DWORD size);

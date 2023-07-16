@@ -36,6 +36,13 @@ real32 SQRTF(real32 number) {
   return number * y;
 }
 
+real32 FABS(real32 number) {
+  if (number < 0) {
+    return -number;
+  }
+  return number;
+}
+
 // vectors
 #define V_END 1
 #define FREE_ARG char *

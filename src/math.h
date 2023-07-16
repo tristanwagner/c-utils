@@ -3,6 +3,8 @@
 
 #include "types.h"
 #include "debug.h"
+#define DEBUG_MEMORY
+#include "dbg_mem.h"
 
 #ifndef PI
 #define PI 3.14159265358979323846f
@@ -73,6 +75,7 @@ uint32 rand_max(uint32 seed, uint32 max);
 void bubble_sort(int, int []);
 
 real32 SQRTF(real32 number);
+real32 FABS(real32 number);
 
 // vectors
 // h high

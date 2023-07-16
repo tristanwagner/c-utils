@@ -1,5 +1,3 @@
-#include "math.h"
-#include "types.h"
 #include "utils.h"
 
 // TODO: introduce unit tests instead of this mess
