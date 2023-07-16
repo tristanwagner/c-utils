@@ -13,11 +13,11 @@
 #endif
 
 #ifndef DEG2RAD
-#define DEG2RAD (PI/180.0f)
+#define DEG2RAD(deg) ((deg) * (PI/180.0f))
 #endif
 
 #ifndef RAD2DEG
-#define RAD2DEG (180.0f/PI)
+#define RAD2DEG(rad) ((rad) * (180.0f/PI))
 #endif
 
 #ifndef BYTE_MAX
@@ -94,16 +94,16 @@ void free_dvector(real64* a, long nl);
 real32** matrix(long nrl, long nrh, long ncl, long nch);
 void free_matrix(real32** a, long nrl, long ncl);
 real64** dmatrix(long nrl, long nrh, long ncl, long nch);
-void free_dmatrix(real64** a, long nrl, long nrh, long ncl, long nch);
+void free_dmatrix(real64** a, long nrl, long ncl);
 int** imatrix(long nrl, long nrh, long ncl, long nch);
-void free_imatrix(int** a, long nrl, long nrh, long ncl, long nch);
+void free_imatrix(int** a, long nrl, long ncl);
 real32** sub_matrix(real32** a, long oldnrl, long oldnrh, long oldncl,
   long oldnch, long newnrl, long newnrh, long newncl, long newnch);
 real32** convert_matrix(real32* a, long nrl, long nrh, long ncl, long nch);
 
 // tensor
-// d depth ?
+// d depth
 real32*** f3tensor(long nrl, long nrh, long ncl, long nch, long ndl, long ndh);
-void free_f3tensor(real32*** a, long nrl, long nrh, long ncl, long nch, long ndl, long ndh);
+void free_f3tensor(real32*** a, long nrl, long ncl, long ndl);
 
 #endif

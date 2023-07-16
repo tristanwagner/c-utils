@@ -1,4 +1,5 @@
 #include "math.h"
+#include "types.h"
 #include "utils.h"
 
 // TODO: introduce unit tests instead of this mess
@@ -139,6 +140,10 @@ int main() {
 
   benchmark((function_entry){.name = "testBenchmark", .ptr = &testBenchmark});
 
+  DEBUG_PRINT("DEG2RAD: %.5f\n", DEG2RAD(90.0));
+
+  DEBUG_PRINT("RAD2DEG: %.2f\n", RAD2DEG(1.57080));
+
   DEBUG_PRINT("SQR: %.2f\n", SQR(5.0));
 
   DEBUG_PRINT("SQRTF: %.2f\n", SQRTF(25.0));
@@ -175,8 +180,23 @@ int main() {
 
   real32 **m = matrix(0, 20, 0, 20);
   m[0][0] = 420.69;
-  DEBUG_PRINT("TEST: %.2f\n", m[0][0]);
+  DEBUG_PRINT("TEST matrix: %.2f\n", m[0][0]);
   free_matrix(m, 0, 0);
+
+  real64 **m2 = dmatrix(0, 20, 0, 20);
+  m2[0][0] = 420.69;
+  DEBUG_PRINT("TEST dmatrix: %.2f\n", m2[0][0]);
+  free_dmatrix(m2, 0, 0);
+
+  int **m3 = imatrix(0, 20, 0, 20);
+  m3[0][0] = 420;
+  DEBUG_PRINT("TEST imatrix: %d\n", m3[0][0]);
+  free_imatrix(m3, 0, 0);
+
+  real32 ***tensor = f3tensor(0, 20, 0, 20, 0, 20);
+  tensor[0][0][0] = 420.69;
+  DEBUG_PRINT("TEST tensor: %.2f\n", tensor[0][0][0]);
+  free_f3tensor(tensor, 0, 0, 0);
 
   int itask = 10;
 
