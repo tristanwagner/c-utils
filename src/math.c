@@ -1,4 +1,5 @@
 #include "math.h"
+#include "types.h"
 
 // produces a random number between 0 and 32767
 uint32 util_rand(uint32 seed) {
@@ -19,6 +20,20 @@ void bubble_sort(int s, int *a) {
       }
     }
   }
+}
+
+// magic
+real32 SQRTF(real32 number) {
+  int i;
+  real32 x, y;
+  x = number * 0.5;
+  y = number;
+  i = *(int *)&y;
+  i = 0x5f3759df - (i >> 1);
+  y = *(float *)&i;
+  y = y * (1.5 - (x * y * y));
+  y = y * (1.5 - (x * y * y));
+  return number * y;
 }
 
 // vectors

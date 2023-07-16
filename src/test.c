@@ -1,3 +1,4 @@
+#include "math.h"
 #include "utils.h"
 
 // TODO: introduce unit tests instead of this mess
@@ -139,6 +140,8 @@ int main() {
   benchmark((function_entry){.name = "testBenchmark", .ptr = &testBenchmark});
 
   DEBUG_PRINT("SQR: %.2f\n", SQR(5.0));
+
+  DEBUG_PRINT("SQRTF: %.2f\n", SQRTF(25.0));
 
   DEBUG_PRINT("FMAX: %.2f\n", FMAX(5.0, 15.0));
 

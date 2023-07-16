@@ -63,7 +63,7 @@ static int imina, iminb;
       (imina) : (iminb))
 
 
-extern uint32 util_rand(uint32 seed);
+uint32 util_rand(uint32 seed);
 uint32 rand_max(uint32 seed, uint32 max);
 
 #ifdef CUSTOM_RAND
@@ -71,6 +71,8 @@ uint32 rand_max(uint32 seed, uint32 max);
 #endif
 
 void bubble_sort(int, int []);
+
+real32 SQRTF(real32 number);
 
 // vectors
 // h high
