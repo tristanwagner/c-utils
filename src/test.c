@@ -47,6 +47,14 @@ void testingSub2() {
   TASK_END();
 }
 
+void benchssplit() {
+  str_split_result sresult = {0};
+  str_split(&sresult, "TEST\nTEST\n", '\n');
+  for (int x = 0; x < sresult.size; x++) {
+    DEBUG_PRINT("splitest result[%d] = %s\n", x, sresult.substrings[x]);
+  }
+}
+
 void testingSub3() {
   TASK_INIT();
   while (1) {
@@ -146,6 +154,8 @@ int main() {
 
   DEBUG_PRINT("SQRTF: %.2f\n", SQRTF(25.0));
 
+  DEBUG_PRINT("FABS: %.2f\n", FABS(-25.0));
+
   DEBUG_PRINT("FMAX: %.2f\n", FMAX(5.0, 15.0));
 
   DEBUG_PRINT("FMIN: %.2f\n", FMIN(5.0, 15.0));
@@ -204,5 +214,20 @@ int main() {
     itask--;
   }
 
+  str_split_result sresult = {0};
+  str_split(&sresult, "TEST\nTEST\n", '\n');
+  for (int x = 0; x < sresult.size; x++) {
+    DEBUG_PRINT("splitest result[%d] = %s\n", x, sresult.substrings[x]);
+  }
+
+  str_split(&sresult, "", '\n');
+  if (sresult.size == 0) {
+    DEBUG_PRINT("ok\n");
+  }
+
+  // TODO: benchmark over a huge buffer
+  benchmark((function_entry){.name = "benchssplit", .ptr = &benchssplit});
+
+  free_str_split_result(&sresult);
   return 0;
 }

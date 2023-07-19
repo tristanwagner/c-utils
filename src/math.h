@@ -14,25 +14,14 @@
 #define EPSILON 0.000001f
 #endif
 
-#ifndef DEG2RAD
 #define DEG2RAD(deg) ((deg) * (PI/180.0f))
-#endif
-
-#ifndef RAD2DEG
 #define RAD2DEG(rad) ((rad) * (180.0f/PI))
-#endif
 
-#ifndef BYTE_MAX
 #define BYTE_MAX  0xFF
-#endif
-
-#ifndef CHAR_MIN
 #define CHAR_MIN  (-0x80)
-#endif
-
-#ifndef CHAR_MAX
 #define CHAR_MAX  0x7F
-#endif
+#define LBYTE(x) ((unsigned char) ((x) & BYTE_MAX))
+#define HBYTE(x) ((unsigned char) ((x) >> 8 & BYTE_MAX))
 
 // maths
 static real32 sqra;
@@ -72,6 +61,7 @@ uint32 rand_max(uint32 seed, uint32 max);
 #define rand(s) util_rand(s)
 #endif
 
+int factorial(int n);
 void bubble_sort(int, int []);
 
 real32 SQRTF(real32 number);

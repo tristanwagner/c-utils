@@ -1,7 +1,7 @@
 #ifndef _TYPES_H_
 #define _TYPES_H_
 
-#include <stdlib.h>
+#include <stddef.h>
 
 #ifndef NULL
 #ifdef __cplusplus
@@ -44,6 +44,7 @@ typedef unsigned int DWORD;
 typedef unsigned char boolean;
 
 // float with 64bits or 32bits precision
+#define F_DOUBLE_PRECISION
 #ifdef F_DOUBLE_PRECISION
 typedef double freal;
 #else

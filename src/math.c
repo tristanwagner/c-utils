@@ -9,6 +9,13 @@ uint32 util_rand(uint32 seed) {
 
 uint32 rand_max(uint32 seed, uint32 max) { return util_rand(seed) % (max + 1); }
 
+int factorial(int n) {
+  if (n == 0 || n == 1) {
+    return 1;
+  }
+  return n * factorial(n - 1);
+}
+
 void bubble_sort(int s, int *a) {
   int x, y, t;
   for (x = 0; x < s - 1; x++) {

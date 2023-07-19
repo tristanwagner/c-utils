@@ -10,7 +10,7 @@ typedef struct {
 #if defined(__MACH__)
 #include <mach/mach_time.h>
 
-uint64_t getCurrentTime();
+uint64_t getCurrentTime(void);
 double convertToNanoseconds(uint64_t t);
 #elif defined(unix)
 #include <time.h>

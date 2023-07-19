@@ -13,6 +13,8 @@ mkdir $l_bin_path
 flags=(
   -std=c99 -x objective-c -O0 -w
 )
+# -Os enables size optimization.
+# -s strips unnecessary symbols.
 
 # Include directories
 inc=(
