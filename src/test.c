@@ -71,7 +71,7 @@ void testingTasks() {
   printf("\n");
 }
 
-int main() {
+int run() {
   BYTE s[50];
   snprintf(s, sizeof s, "LHELLLLLLLLLLLO");
   DEBUG_PRINT("%s\n", s);
@@ -231,3 +231,5 @@ int main() {
   free_str_split_result(&sresult);
   return 0;
 }
+
+/* int main() { run(); } */

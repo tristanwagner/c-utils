@@ -9,6 +9,8 @@
 #include "debug.h"
 #include "dbg_mem.h"
 #include "types.h"
+#include "buffer.h"
+#include "term.h"
 #include "benchmark.h"
 #include "queue.h"
 #include "task.h"
