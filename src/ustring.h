@@ -1,7 +1,7 @@
 #ifndef _U_STRING_H_
 #define _U_STRING_H_
 
-#include <stdlib.h>
+#include <ctype.h>
 #include <string.h>
 #include "uerror.h"
 #define DEBUG_MEMORY
@@ -18,6 +18,7 @@ void str_split(str_split_result* result, char *src, char token);
 void free_str_split_result(str_split_result *result);
 char* itoa(int value);
 int atoi(const char* s);
+int c_is_separator(int c);
 // TODO: research more * implement
 // to lowercased
 // to uppercased
