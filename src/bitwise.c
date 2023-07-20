@@ -44,6 +44,10 @@ int bit_toggle(int index, char *field) {
   return (res) ? 1 : 0;
 }
 
+int bytes_compare(char *b0, char *b1, size_t len) {
+  return 0 == memcmp(b0, b1, len);
+}
+
 // extract bits from bytes
 size_t extract_bits_from_bytes(char *src, size_t pos, size_t bits) {
   size_t i, res = 0;

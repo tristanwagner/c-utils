@@ -18,5 +18,10 @@ void str_split(str_split_result* result, char *src, char token);
 void free_str_split_result(str_split_result *result);
 char* itoa(int value);
 int atoi(const char* s);
+// TODO: research more * implement
+// to lowercased
+// to uppercased
+// is numericlowercased
+// substring
 
 #endif

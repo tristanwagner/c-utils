@@ -53,6 +53,7 @@ static int imina, iminb;
 #define IMIN(a, b) (imina=(a), iminb=(b), (imina) < (iminb) ?\
       (imina) : (iminb))
 
+#define CLAMP(V, MIN, MAX) ((V) > (MAX) ? (MAX) : (V) < (MIN) ? (MIN) : (V))
 
 uint32 util_rand(uint32 seed);
 uint32 rand_max(uint32 seed, uint32 max);

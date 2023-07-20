@@ -4,6 +4,7 @@
 #include <stdlib.h>
 
 #define ZeroStruct(a) memset(&(a), 0, sizeof(a))
+#define ARRAY_SIZE(a) sizeof(a) / sizeof(a[0])
 
 #include "uerror.h"
 #include "debug.h"
