@@ -1,8 +1,8 @@
 #ifndef _TERM_H_
 #define _TERM_H_
 
-#define ESC \033
-#define CSI [
+#define ESC '\x1b'
+#define CSI '['
 
 #include "uerror.h"
 #include <stdio.h>
