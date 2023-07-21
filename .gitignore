@@ -3,3 +3,5 @@ a.exe
 test.txt
 tags
 utils
+*.a
+*.o
