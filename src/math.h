@@ -3,8 +3,8 @@
 
 #include "types.h"
 #include "debug.h"
-#define DEBUG_MEMORY
-#include "dbg_mem.h"
+/* #define DEBUG_MEMORY */
+/* #include "dbg_mem.h" */
 
 #ifndef PI
 #define PI 3.14159265358979323846f

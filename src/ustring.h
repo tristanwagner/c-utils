@@ -4,8 +4,8 @@
 #include <ctype.h>
 #include <string.h>
 #include "uerror.h"
-#define DEBUG_MEMORY
-#include "dbg_mem.h"
+/* #define DEBUG_MEMORY */
+/* #include "dbg_mem.h" */
 
 typedef struct {
   char **substrings;
