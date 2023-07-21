@@ -1,9 +1,9 @@
 #include "term.h"
 
-static struct termios *lptr;
+static struct termios tiosorigin;
 
 void term_reset_options() {
-  if (tcsetattr(STDIN_FILENO, TCSAFLUSH, lptr) == -1)
+  if (tcsetattr(STDIN_FILENO, TCSAFLUSH, &tiosorigin) == -1)
     die("tcsetattr");
 }
 
@@ -15,6 +15,7 @@ void term_enable_raw_mode() {
   if (tcgetattr(STDIN_FILENO, &raw) == -1)
     die("tcgetattr");
 
+  raw = tiosorigin;
   /*
    * IXON: turn off software control flow data features (Ctrl-S/Ctrl-Q to stop
    * and resume program output) ICRNL: turn off carriage return new line
@@ -49,7 +50,7 @@ void term_enable_raw_mode() {
 }
 
 void term_init() {
-  tcgetattr(STDIN_FILENO, lptr);
+  tcgetattr(STDIN_FILENO, &tiosorigin);
   term_enable_raw_mode();
 }
 
