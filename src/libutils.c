@@ -1,12 +1,5 @@
 #include "libutils.h"
-
-// just an example on how to open a file
-void example_fopen() {
-  FILE *f;
-  if ((f = fopen("filepath", "rb"))) {
-    DEBUG_PRINT("fileSize: %d\n", f_size(f));
-  }
-}
+#include <stdio.h>
 
 // return file size
 int f_size(FILE *f) {
@@ -15,4 +8,13 @@ int f_size(FILE *f) {
   res = ftell(f);
   fseek(f, original, SEEK_SET);
   return res;
+}
+
+int f_exist(char *filename) {
+  FILE *f = fopen(filename, "rb");
+  if (f) {
+    fclose(f);
+    return TRUE;
+  }
+  return FALSE;
 }

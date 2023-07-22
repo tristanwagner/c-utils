@@ -21,5 +21,6 @@
 #include "benchmark.h"
 
 int f_size(FILE* f);
+int f_exist(char* filename);
 
 #endif
