@@ -12,13 +12,13 @@
 #include "types.h"
 #include "buffer.h"
 #include "term.h"
-#include "benchmark.h"
 #include "queue.h"
 #include "task.h"
 #include "bitwise.h"
 #include "math.h"
 #include "complex.h"
 #include "ustring.h"
+#include "benchmark.h"
 
 int f_size(FILE* f);
 

@@ -1,4 +1,4 @@
-#include "utils.h"
+#include "./src/libutils.h"
 
 // TODO: introduce unit tests instead of this mess
 
@@ -232,4 +232,4 @@ int run() {
   return 0;
 }
 
-/* int main() { run(); } */
+int main() { run(); }

@@ -95,8 +95,3 @@ int term_get_cursor_position(int *rows, int *cols) {
 }
 
 void term_clean() { fputs("\033c", stdout); }
-
-void term_pre_quit() {
-  term_clean();
-  term_reset_options();
-}
