@@ -3,12 +3,12 @@
 
 #include "mem.h"
 
-typedef struct CQueue CQueue;
 typedef struct CQueue
 {
-    CQueue *next;
-    CQueue *last;
+    struct CQueue *next;
+    struct CQueue *last;
 } CQueue;
+
 typedef void (*QCallback)(void *);
 
 void QInit(void *head);

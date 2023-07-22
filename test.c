@@ -2,10 +2,8 @@
 
 // TODO: introduce unit tests instead of this mess
 
-typedef struct Test Test;
-
 typedef struct Test {
-  Test *next, *last;
+  struct Test *next, *last;
   int value;
 } Test;
 
@@ -48,9 +46,10 @@ void testingSub2() {
 }
 
 void benchssplit() {
+  int x;
   str_split_result sresult = {0};
   str_split(&sresult, "TEST\nTEST\n", '\n');
-  for (int x = 0; x < sresult.size; x++) {
+  for (x = 0; x < sresult.size; x++) {
     DEBUG_PRINT("splitest result[%d] = %s\n", x, sresult.substrings[x]);
   }
 }
@@ -72,29 +71,31 @@ void testingTasks() {
 }
 
 int run() {
-  BYTE s[50];
+  int x;
+  size_t i;
+  char *s = malloc(50 * sizeof(char));
   snprintf(s, sizeof s, "LHELLLLLLLLLLLO");
   DEBUG_PRINT("%s\n", s);
-  DEBUG_PRINT("%d\n", str_ch_oc(s, 'L'));
+  DEBUG_PRINT("%zu\n", str_ch_oc(s, 'L'));
   DEBUG_PRINT("%d\n", bit(80, s));
-  bit_set(80, &s);
+  bit_set(80, s);
   DEBUG_PRINT("%s\n", s);
   DEBUG_PRINT("%d\n", bit(80, s));
-  bit_clear(80, &s);
+  bit_clear(80, s);
   DEBUG_PRINT("%d\n", bit(80, s));
   DEBUG_PRINT("%s\n", s);
-  bit_toggle(80, &s);
+  bit_toggle(80, s);
   DEBUG_PRINT("%d\n", bit(80, s));
   DEBUG_PRINT("%s\n", s);
-  bit_toggle(80, &s);
+  bit_toggle(80, s);
   DEBUG_PRINT("%d\n", bit(80, s));
   DEBUG_PRINT("%s\n", s);
-  DEBUG_PRINT("%d\n", extract_bits_from_bytes("AAA", 0, 8));
-  DEBUG_PRINT("strlen %s: %d\n", s, str_len(s));
-  DEBUG_PRINT("strlen %s: %d\n", "hello", str_len("hello"));
+  DEBUG_PRINT("%zu\n", extract_bits_from_bytes("AAA", 0, 8));
+  DEBUG_PRINT("strlen %s: %zu\n", s, str_len(s));
+  DEBUG_PRINT("strlen %s: %zu\n", "hello", str_len("hello"));
   int a = 3499995;
   char *t = itoa(a);
-  DEBUG_PRINT("strlen %s: %d\n", t, str_len(t));
+  DEBUG_PRINT("strlen %s: %zu\n", t, str_len(t));
 
   char sa[] = "3499995";
   int st = atoi(sa);
@@ -102,13 +103,13 @@ int run() {
 
   int b = -3499995;
   char *tt = itoa(b);
-  DEBUG_PRINT("strlen %s: %d\n", tt, str_len(tt));
+  DEBUG_PRINT("strlen %s: %zu\n", tt, str_len(tt));
   Test list;
   QInit(&list);
 
   DEBUG_PRINT("%d\n", list.value);
 
-  for (size_t i = 0; i < 10; i++) {
+  for (i = 0; i < 10; i++) {
     Test *tmp = (Test *)malloc(sizeof(Test));
     tmp->value = i;
     QPush(tmp, &list);
@@ -216,7 +217,7 @@ int run() {
 
   str_split_result sresult = {0};
   str_split(&sresult, "TEST\nTEST\n", '\n');
-  for (int x = 0; x < sresult.size; x++) {
+  for (x = 0; x < sresult.size; x++) {
     DEBUG_PRINT("splitest result[%d] = %s\n", x, sresult.substrings[x]);
   }
 

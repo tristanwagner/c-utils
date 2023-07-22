@@ -5,3 +5,7 @@ tags
 utils
 *.a
 *.o
+*.so
+*.dSYM/
+runtime_test
+test
