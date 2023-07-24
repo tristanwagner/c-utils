@@ -51,7 +51,6 @@ void term_enable_raw_mode() {
 
 void term_init() {
   tcgetattr(STDIN_FILENO, &tiosorigin);
-  term_save_cursor_position();
   term_enable_raw_mode();
   term_enable_mouse_reporting();
 }
@@ -153,5 +152,6 @@ int term_clean() {
 
 void term_exit() {
   term_disable_mouse_reporting();
-  term_restore_cursor_position();
+  term_clean();
+  term_move_cursor_to_origin();
 }
