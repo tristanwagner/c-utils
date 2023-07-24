@@ -1,6 +1,6 @@
 #include "term.h"
 
-static struct termios tiosorigin;
+struct termios tiosorigin;
 
 void term_reset_options() {
   if (tcsetattr(STDIN_FILENO, TCSAFLUSH, &tiosorigin) == -1)
@@ -36,8 +36,8 @@ void term_enable_raw_mode() {
   /*
    * ECHO: turn off echoing input
    * ICANON: turnoff canonical mode aka read byte per byte instead of line per
-   * line ISIG: turn off term signals like Ctrl-Z, etc.. IEXTEN: turn off
-   * Ctrl-V
+   * line ISIG: turn off term signals like Ctrl-Z, etc..
+   * IEXTEN: turn off Ctrl-V
    * */
   raw.c_lflag &= ~(ECHO | ICANON | ISIG | IEXTEN);
 
@@ -51,7 +51,9 @@ void term_enable_raw_mode() {
 
 void term_init() {
   tcgetattr(STDIN_FILENO, &tiosorigin);
+  term_save_cursor_position();
   term_enable_raw_mode();
+  term_enable_mouse_reporting();
 }
 
 int term_get_window_size(int *rows, int *cols) {
@@ -111,4 +113,38 @@ int term_disable_mouse_reporting() {
   return 1;
 }
 
-void term_clean() { fputs("\x1b", stdout); }
+int term_save_cursor_position() {
+  if (write(STDOUT_FILENO, "\x1b[s", 3) != 3)
+    return 0;
+
+  return 1;
+}
+
+int term_restore_cursor_position() {
+  if (write(STDOUT_FILENO, "\x1b[u", 3) != 3)
+    return 0;
+
+  return 1;
+}
+
+int term_move_cursor(int x, int y) {
+  char buf[32];
+  snprintf(buf, sizeof(buf), "\x1b[%d;%dH", x, y);
+  int len = str_len(buf);
+  if (write(STDOUT_FILENO, buf, len) != len)
+    return 0;
+
+  return 1;
+}
+
+int term_clean() {
+  if (write(STDOUT_FILENO, "\x1b[2J", 8) != 8)
+    return 0;
+
+  return 1;
+}
+
+void term_exit() {
+  term_disable_mouse_reporting();
+  term_restore_cursor_position();
+}

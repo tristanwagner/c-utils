@@ -5,6 +5,7 @@
 #define CSI '['
 
 #include "uerror.h"
+#include "ustring.h"
 #include <stdio.h>
 #include <sys/ioctl.h>
 #include <termios.h>
@@ -17,5 +18,9 @@ int term_get_window_size(int *rows, int *cols);
 int term_get_cursor_position(int *rows, int *cols);
 int term_enable_mouse_reporting();
 int term_disable_mouse_reporting();
-void term_clean();
+int term_save_cursor_position();
+int term_restore_cursor_position();
+int term_move_cursor(int x, int y);
+int term_clean();
+void term_exit();
 #endif
