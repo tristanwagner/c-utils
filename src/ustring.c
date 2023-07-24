@@ -1,4 +1,5 @@
 #include "ustring.h"
+#include <stdio.h>
 
 // count character occurences in string
 size_t str_ch_oc(const char *str, char ch) {
@@ -126,4 +127,23 @@ int atoi(const char *s) {
 
 int c_is_separator(int c) {
   return isspace(c) || c == '\0' || strchr(",.()+-/*=~%<>[];", c) != NULL;
+}
+
+char *str_to_hex(const char *src, size_t len) {
+
+  int out_len = len * 6 + (len % 8);
+
+  if (out_len < 1) {
+    return NULL;
+  }
+
+  char *buffer = malloc(out_len + 1);
+
+  int i, c = 0;
+  for (i = 0; i < len; i++) {
+    c += snprintf(&buffer[c], 6, "0x%02X ", src[i]);
+  }
+  // terminate string and strip last space
+  buffer[c - 1] = '\0';
+  return buffer;
 }

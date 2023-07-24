@@ -19,6 +19,7 @@ void free_str_split_result(str_split_result *result);
 char* itoa(int value);
 int atoi(const char* s);
 int c_is_separator(int c);
+char *str_to_hex(const char *src, size_t len);
 // TODO: research more * implement
 // to lowercased
 // to uppercased

@@ -1,4 +1,4 @@
-#include "./src/libutils.h"
+#include "src/libutils.h"
 
 // TODO: introduce unit tests instead of this mess
 
@@ -230,6 +230,9 @@ int run() {
   benchmark((function_entry){.name = "benchssplit", .ptr = &benchssplit});
 
   free_str_split_result(&sresult);
+
+  char *tstr = "abcdefghijklmnopqrstuvwxyz ./,;";
+  DEBUG_PRINT("str_to_hex %s => \n%s", tstr, str_to_hex(tstr, str_len(tstr)));
   return 0;
 }
 
