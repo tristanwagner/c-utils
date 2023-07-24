@@ -15,5 +15,7 @@ void term_enable_raw_mode();
 void term_init();
 int term_get_window_size(int *rows, int *cols);
 int term_get_cursor_position(int *rows, int *cols);
+int term_enable_mouse_reporting();
+int term_disable_mouse_reporting();
 void term_clean();
 #endif

@@ -94,4 +94,21 @@ int term_get_cursor_position(int *rows, int *cols) {
   return 0;
 }
 
-void term_clean() { fputs("\033c", stdout); }
+// TODO:
+// study more about compatibility on that
+// mouse scroll event = "\x1b[M"
+int term_enable_mouse_reporting() {
+  if (write(STDOUT_FILENO, "\x1b[?1000h", 8) != 8)
+    return 0;
+
+  return 1;
+}
+
+int term_disable_mouse_reporting() {
+  if (write(STDOUT_FILENO, "\x1b[?1000l", 8) != 8)
+    return 0;
+
+  return 1;
+}
+
+void term_clean() { fputs("\x1b", stdout); }
