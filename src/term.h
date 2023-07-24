@@ -22,5 +22,6 @@ int term_save_cursor_position();
 int term_restore_cursor_position();
 int term_move_cursor(int x, int y);
 int term_clean();
+int term_move_cursor_to_origin();
 void term_exit();
 #endif

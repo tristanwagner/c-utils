@@ -137,6 +137,13 @@ int term_move_cursor(int x, int y) {
   return 1;
 }
 
+int term_move_cursor_to_origin() {
+  if (write(STDOUT_FILENO, "\x1b[H", 3) != 3)
+    return 0;
+
+  return 1;
+}
+
 int term_clean() {
   if (write(STDOUT_FILENO, "\x1b[2J", 8) != 8)
     return 0;
