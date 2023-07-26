@@ -9,3 +9,4 @@ utils
 *.dSYM/
 runtime_test
 test
+*_dbg

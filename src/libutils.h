@@ -19,6 +19,7 @@
 #include "complex.h"
 #include "ustring.h"
 #include "benchmark.h"
+#include "clipboard.h"
 
 int f_size(FILE* f);
 int f_exist(char* filename);

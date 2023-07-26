@@ -232,7 +232,9 @@ int run() {
   free_str_split_result(&sresult);
 
   char *tstr = "abcdefghijklmnopqrstuvwxyz ./,;";
-  DEBUG_PRINT("str_to_hex %s => \n%s", tstr, str_to_hex(tstr, str_len(tstr)));
+  DEBUG_PRINT("str_to_hex %s => \n%s\n", tstr, str_to_hex(tstr, str_len(tstr)));
+
+  DEBUG_PRINT("%s", clipboard_read());
   return 0;
 }
 
