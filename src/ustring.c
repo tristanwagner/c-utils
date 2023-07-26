@@ -130,18 +130,20 @@ int c_is_separator(int c) {
 }
 
 char *str_to_hex(const char *src, size_t len) {
-
-  int out_len = len * 6 + (len % 8);
-
-  if (out_len < 1) {
+  if (len == 0 || src == NULL) {
     return NULL;
   }
 
+  int out_len = len * 5;
+
   char *buffer = malloc(out_len + 1);
+  if (buffer == NULL) {
+    return NULL;
+  }
 
   int i, c = 0;
   for (i = 0; i < len; i++) {
-    c += snprintf(&buffer[c], 6, "0x%02X ", src[i]);
+    c += snprintf(&buffer[c], 6, "0x%02X ", (unsigned char)src[i]);
   }
   // terminate string and strip last space
   buffer[c - 1] = '\0';

@@ -23,7 +23,7 @@ char *str_to_hex(const char *src, size_t len);
 // TODO: research more * implement
 // to lowercased
 // to uppercased
-// is numericlowercased
+// is numeric
 // substring
 
 #endif

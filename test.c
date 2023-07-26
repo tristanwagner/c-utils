@@ -234,6 +234,9 @@ int run() {
   char *tstr = "abcdefghijklmnopqrstuvwxyz ./,;";
   DEBUG_PRINT("str_to_hex %s => \n%s\n", tstr, str_to_hex(tstr, str_len(tstr)));
 
+  char *tstr2 = "\xFF\xFF\xFF\x00";
+  DEBUG_PRINT("str_to_hex %s => \n%s\n", tstr2, str_to_hex(tstr2, 4));
+
   DEBUG_PRINT("%s", clipboard_read());
   return 0;
 }
