@@ -49,11 +49,7 @@ void term_enable_raw_mode() {
     die("tcsetattr");
 }
 
-void term_init() {
-  tcgetattr(STDIN_FILENO, &tiosorigin);
-  term_enable_raw_mode();
-  term_enable_mouse_reporting();
-}
+void term_init() { tcgetattr(STDIN_FILENO, &tiosorigin); }
 
 int term_get_window_size(int *rows, int *cols) {
   struct winsize ws;
@@ -148,10 +144,4 @@ int term_clean() {
     return 0;
 
   return 1;
-}
-
-void term_exit() {
-  term_disable_mouse_reporting();
-  term_clean();
-  term_move_cursor_to_origin();
 }
