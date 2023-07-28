@@ -45,6 +45,7 @@ clean:
 
 else ifeq ($(shell uname),Darwin) # macOS
 
+# objective c
 %.m.o: %.m
 	$(CC) -c $< -o $@
 

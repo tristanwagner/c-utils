@@ -2,10 +2,10 @@
 
 ## build
 
-OSX
+only tested in OSX for now
 
 ```sh
-./build/osx/build.sh
+make
 ```
 
 ## TODO/ideas
@@ -22,4 +22,3 @@ OSX
 <https://computer.howstuffworks.com/c15.htm>
 
 <https://www.grad.hr/nastava/gs/prg/NumericalRecipesinC.pdf>
-

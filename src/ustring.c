@@ -1,5 +1,4 @@
 #include "ustring.h"
-#include <stdio.h>
 
 // count character occurences in string
 size_t str_ch_oc(const char *str, char ch) {

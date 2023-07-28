@@ -237,6 +237,7 @@ int run() {
   char *tstr2 = "\xFF\xFF\xFF\x00";
   DEBUG_PRINT("str_to_hex %s => \n%s\n", tstr2, str_to_hex(tstr2, 4));
 
+  clipboard_write("TEST Clipboard");
   DEBUG_PRINT("%s", clipboard_read());
   return 0;
 }
