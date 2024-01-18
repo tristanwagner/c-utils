@@ -70,6 +70,15 @@ void testingTasks() {
   printf("\n");
 }
 
+static char *tstr = "abcdefghijklmnopqrstuvwxyz ./,;";
+
+void testStrToHex() {
+  DEBUG_PRINT("str_to_hex %s => \n%s\n", tstr, str_to_hex(tstr, str_len(tstr)));
+}
+void testBinToHex() {
+  DEBUG_PRINT("bin_to_hex %s => \n%s\n", tstr, bin_to_hex(tstr, str_len(tstr)));
+}
+
 int run() {
   int x;
   size_t i;
@@ -231,8 +240,11 @@ int run() {
 
   free_str_split_result(&sresult);
 
-  char *tstr = "abcdefghijklmnopqrstuvwxyz ./,;";
   DEBUG_PRINT("str_to_hex %s => \n%s\n", tstr, str_to_hex(tstr, str_len(tstr)));
+  DEBUG_PRINT("bin_to_hex %s => \n%s\n", tstr, bin_to_hex(tstr, str_len(tstr)));
+
+  benchmark((function_entry){.name = "testBinToHex", .ptr = &testBinToHex});
+  benchmark((function_entry){.name = "testStrToHex", .ptr = &testStrToHex});
 
   char *tstr2 = "\xFF\xFF\xFF\x00";
   DEBUG_PRINT("str_to_hex %s => \n%s\n", tstr2, str_to_hex(tstr2, 4));

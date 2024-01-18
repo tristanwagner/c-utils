@@ -148,3 +148,32 @@ char *str_to_hex(const char *src, size_t len) {
   buffer[c - 1] = '\0';
   return buffer;
 }
+
+static char hex[16] = "0123456789ABCDEF";
+
+// another implementation without std
+char *bin_to_hex(const char *src, size_t len) {
+  if (len == 0 || src == NULL) {
+    return NULL;
+  }
+
+  int out_len = len * 5;
+
+  char *buffer = malloc(out_len + 1);
+  if (buffer == NULL) {
+    return NULL;
+  }
+
+  int i, offset = 0;
+  for (i = 0; i < len; i++) {
+    offset = i * 5;
+    buffer[offset++] = '0';
+    buffer[offset++] = 'x';
+    buffer[offset++] = hex[src[i] >> 4];
+    buffer[offset++] = hex[src[i] & 0x0F];
+    buffer[offset++] = ' ';
+  }
+  // terminate string and strip last space
+  buffer[offset] = '\0';
+  return buffer;
+}
