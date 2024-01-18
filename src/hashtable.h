@@ -19,13 +19,14 @@ typedef struct {
   ht_item** items;
 } ht_table;
 
-static ht_item* ht_new_item(const char* k, const char* v);
 ht_table* ht_new();
+ht_table* ht_new_sized(int base_size);
+static ht_item* ht_new_item(const char* k, const char* v);
 static void ht_del_item(ht_item* i);
 static void ht_del_table(ht_table* t);
 
 void ht_insert(ht_table* ht, const char* key, const char* value);
-char* ht_search(ht_table* ht, const char* key);
+char* ht_get(ht_table* ht, const char* key);
 void ht_delete(ht_table* h, const char* key);
 
 static void ht_resize(ht_table *ht, const int base_size);

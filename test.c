@@ -255,10 +255,10 @@ int run() {
 
   ht_table *ht = ht_new();
   ht_insert(ht, "test", "value");
-  DEBUG_PRINT("hashtable search key test %s\n", ht_search(ht, "test"));
+  DEBUG_PRINT("hashtable search key test %s\n", ht_get(ht, "test"));
 
   ht_insert(ht, "test", "value2");
-  DEBUG_PRINT("hashtable search key test %s\n", ht_search(ht, "test"));
+  DEBUG_PRINT("hashtable search key test %s\n", ht_get(ht, "test"));
   return 0;
 }
 
