@@ -1,3 +1,4 @@
+#include "src/hashtable.h"
 #include "src/libutils.h"
 
 // TODO: introduce unit tests instead of this mess
@@ -250,7 +251,14 @@ int run() {
   DEBUG_PRINT("str_to_hex %s => \n%s\n", tstr2, str_to_hex(tstr2, 4));
 
   clipboard_write("TEST Clipboard");
-  DEBUG_PRINT("%s", clipboard_read());
+  DEBUG_PRINT("%s\n", clipboard_read());
+
+  ht_table *ht = ht_new();
+  ht_insert(ht, "test", "value");
+  DEBUG_PRINT("hashtable search key test %s\n", ht_search(ht, "test"));
+
+  ht_insert(ht, "test", "value2");
+  DEBUG_PRINT("hashtable search key test %s\n", ht_search(ht, "test"));
   return 0;
 }
 
