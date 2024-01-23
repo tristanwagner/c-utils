@@ -22,6 +22,7 @@
 #include "clipboard.h"
 #include "prime.h"
 #include "hashtable.h"
+#include "array.h"
 
 int f_size(FILE* f);
 int f_exist(char* filename);

@@ -11,8 +11,8 @@ make
 ## TODO/ideas
 
 - [ ] threads
-- [ ] dynamic arrays
-- [ ] hashtable
+- [x] [dynamic arrays](https://bytesbeneath.com/p/dynamic-arrays-in-c)
+- [x] hashtable
 - [ ] advanced memory debugging
 
 ## sources

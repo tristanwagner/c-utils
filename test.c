@@ -1,4 +1,3 @@
-#include "src/hashtable.h"
 #include "src/libutils.h"
 
 // TODO: introduce unit tests instead of this mess
@@ -259,6 +258,45 @@ int run() {
 
   ht_insert(ht, "test", "value2");
   DEBUG_PRINT("hashtable search key test %s\n", ht_get(ht, "test"));
+
+  int *arr_test = array(int);
+  DEBUG_PRINT("test\n");
+  DEBUG_PRINT("array_test capacity %zu\n", array_capacity(arr_test));
+  array_push(arr_test, 3);
+
+  DEBUG_PRINT("array_test length %zu\n", array_length(arr_test));
+  DEBUG_PRINT("array_test[0] %d\n", arr_test[0]);
+  DEBUG_PRINT("array_test capacity %zu\n", array_capacity(arr_test));
+
+  array_push(arr_test, 4);
+  array_push(arr_test, 5);
+  array_push(arr_test, 6);
+  array_push(arr_test, 7);
+
+  DEBUG_PRINT("array_test length %zu\n", array_length(arr_test));
+  DEBUG_PRINT("array_test[0] %d\n", arr_test[0]);
+  DEBUG_PRINT("array_test[1] %d\n", arr_test[1]);
+  DEBUG_PRINT("array_test[2] %d\n", arr_test[2]);
+  DEBUG_PRINT("array_test[3] %d\n", arr_test[3]);
+  DEBUG_PRINT("array_test[4] %d\n", arr_test[4]);
+
+  array_remove(arr_test, 0);
+  DEBUG_PRINT("array_test length %zu\n", array_length(arr_test));
+  DEBUG_PRINT("array_test[0] %d\n", arr_test[0]);
+  DEBUG_PRINT("array_test[1] %d\n", arr_test[1]);
+  DEBUG_PRINT("array_test[2] %d\n", arr_test[2]);
+  DEBUG_PRINT("array_test[3] %d\n", arr_test[3]);
+
+  array_remove(arr_test, 1);
+  DEBUG_PRINT("array_test length %zu\n", array_length(arr_test));
+  DEBUG_PRINT("array_test[0] %d\n", arr_test[0]);
+  DEBUG_PRINT("array_test[1] %d\n", arr_test[1]);
+  DEBUG_PRINT("array_test[2] %d\n", arr_test[2]);
+
+  array_pop(arr_test);
+  DEBUG_PRINT("array_test length %zu\n", array_length(arr_test));
+  DEBUG_PRINT("array_test last %d\n", arr_test[array_length(arr_test) - 1]);
+
   return 0;
 }
 
