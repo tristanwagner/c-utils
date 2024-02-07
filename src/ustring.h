@@ -1,7 +1,6 @@
 #ifndef _U_STRING_H_
 #define _U_STRING_H_
 
-#include <ctype.h>
 #include <string.h>
 #include "uerror.h"
 /* #define DEBUG_MEMORY */
@@ -28,5 +27,9 @@ char *bin_to_hex(const char *src, size_t len);
 // to uppercased
 // is numeric
 // substring
+// ends with
+// starts with
+// concat
+// join
 
 #endif

@@ -1,10 +1,10 @@
 #ifndef _BITWISE_H_
 #define _BITWISE_H_
 
-#include <stddef.h>
 #include <string.h>
 
 #define STRUCT_OFFSET(TYPE, ELEMENT) ((size_t)(&(((TYPE*)(0))->ELEMENT)))
+#define BITVALUE(V, I) (((V) >> (I) ) & 0x1)
 
 int bit(int index, char* field);
 int bit_set(int index, char* field);

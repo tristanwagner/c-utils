@@ -82,8 +82,7 @@ void testBinToHex() {
 int run() {
   int x;
   size_t i;
-  char *s = malloc(50 * sizeof(char));
-  snprintf(s, sizeof s, "LHELLLLLLLLLLLO");
+  char s[] = "LHELLLLLLLLLLLO";
   DEBUG_PRINT("%s\n", s);
   DEBUG_PRINT("%zu\n", str_ch_oc(s, 'L'));
   DEBUG_PRINT("%d\n", bit(80, s));
@@ -113,6 +112,33 @@ int run() {
   int b = -3499995;
   char *tt = itoa(b);
   DEBUG_PRINT("strlen %s: %zu\n", tt, str_len(tt));
+
+  str_split_result sresult = {0};
+  str_split(&sresult, "TEST\nTEST\n", '\n');
+  for (x = 0; x < sresult.size; x++) {
+    DEBUG_PRINT("splitest result[%d] = %s\n", x, sresult.substrings[x]);
+  }
+
+  str_split(&sresult, "", '\n');
+  if (sresult.size == 0) {
+    DEBUG_PRINT("ok\n");
+  }
+
+  // TODO: benchmark over a huge buffer
+  benchmark((function_entry){.name = "benchssplit", .ptr = &benchssplit});
+
+  free_str_split_result(&sresult);
+
+  DEBUG_PRINT("str_to_hex %s => \n%s\n", tstr, str_to_hex(tstr, str_len(tstr)));
+  DEBUG_PRINT("bin_to_hex %s => \n%s\n", tstr, bin_to_hex(tstr, str_len(tstr)));
+
+  benchmark((function_entry){.name = "testBinToHex", .ptr = &testBinToHex});
+  benchmark((function_entry){.name = "testStrToHex", .ptr = &testStrToHex});
+
+  char *tstr2 = "\xFF\xFF\xFF\x00";
+  DEBUG_PRINT("str_to_hex %s => \n%s\n", tstr2, str_to_hex(tstr2, 4));
+
+  // Queue
   Test list;
   QInit(&list);
 
@@ -154,8 +180,10 @@ int run() {
 
   free(add);
 
+  // Benchmark
   benchmark((function_entry){.name = "testBenchmark", .ptr = &testBenchmark});
 
+  // Maths
   DEBUG_PRINT("DEG2RAD: %.5f\n", DEG2RAD(90.0));
 
   DEBUG_PRINT("RAD2DEG: %.2f\n", RAD2DEG(1.57080));
@@ -216,6 +244,7 @@ int run() {
   DEBUG_PRINT("TEST tensor: %.2f\n", tensor[0][0][0]);
   free_f3tensor(tensor, 0, 0, 0);
 
+  // Tasks
   int itask = 10;
 
   DEBUG_PRINT("TASKS:\n");
@@ -224,41 +253,19 @@ int run() {
     itask--;
   }
 
-  str_split_result sresult = {0};
-  str_split(&sresult, "TEST\nTEST\n", '\n');
-  for (x = 0; x < sresult.size; x++) {
-    DEBUG_PRINT("splitest result[%d] = %s\n", x, sresult.substrings[x]);
-  }
-
-  str_split(&sresult, "", '\n');
-  if (sresult.size == 0) {
-    DEBUG_PRINT("ok\n");
-  }
-
-  // TODO: benchmark over a huge buffer
-  benchmark((function_entry){.name = "benchssplit", .ptr = &benchssplit});
-
-  free_str_split_result(&sresult);
-
-  DEBUG_PRINT("str_to_hex %s => \n%s\n", tstr, str_to_hex(tstr, str_len(tstr)));
-  DEBUG_PRINT("bin_to_hex %s => \n%s\n", tstr, bin_to_hex(tstr, str_len(tstr)));
-
-  benchmark((function_entry){.name = "testBinToHex", .ptr = &testBinToHex});
-  benchmark((function_entry){.name = "testStrToHex", .ptr = &testStrToHex});
-
-  char *tstr2 = "\xFF\xFF\xFF\x00";
-  DEBUG_PRINT("str_to_hex %s => \n%s\n", tstr2, str_to_hex(tstr2, 4));
-
+  // Clipboard
   clipboard_write("TEST Clipboard");
   DEBUG_PRINT("%s\n", clipboard_read());
 
-  ht_table *ht = ht_new();
-  ht_insert(ht, "test", "value");
-  DEBUG_PRINT("hashtable search key test %s\n", ht_get(ht, "test"));
+  // Hashtable
+  ht *tbl = ht_new();
+  ht_insert(tbl, "test", "value");
+  DEBUG_PRINT("hashtable search key test %s\n", ht_get(tbl, "test"));
 
-  ht_insert(ht, "test", "value2");
-  DEBUG_PRINT("hashtable search key test %s\n", ht_get(ht, "test"));
+  ht_insert(tbl, "test", "value2");
+  DEBUG_PRINT("hashtable search key test %s\n", ht_get(tbl, "test"));
 
+  // Dynamic array
   int *arr_test = array(int);
   DEBUG_PRINT("test\n");
   DEBUG_PRINT("array_test capacity %zu\n", array_capacity(arr_test));

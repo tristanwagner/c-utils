@@ -124,8 +124,15 @@ int atoi(const char *s) {
   return n;
 }
 
+int c_is_space(int c) {
+  return c == '\t' || c == '\v' || c == '\f' || c == '\n' || c == '\r' ||
+                 c == ' '
+             ? 1
+             : 0;
+}
+
 int c_is_separator(int c) {
-  return isspace(c) || c == '\0' || strchr(",.()+-/*=~%<>[];", c) != NULL;
+  return c_is_space(c) || c == '\0' || strchr(",.()+-/*=~%<>[];", c) != NULL;
 }
 
 char *str_to_hex(const char *src, size_t len) {
