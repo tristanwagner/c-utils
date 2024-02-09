@@ -1,7 +1,5 @@
 FLAGS = -std=c99
-FLAGS_OSX = $(FLAGS) -x objective-c -framework Cocoa
-FLAGS_WIN = $(FLAGS)
-FLAGS_LINUX = $(FLAGS)
+LIBS = -L. -lutils
 
 # List of all .c files in the src directory
 SRCS := $(wildcard ./src/*.c)
@@ -9,66 +7,67 @@ SRCS := $(wildcard ./src/*.c)
 # Create a list of object files from the source files
 OBJS := $(SRCS:.c=.o)
 
-# List of platform-specific object files
-OBJS_OSX := $(OBJS) ./src/clipboard.m.o
-OBJS_WIN := $(OBJS)
-OBJS_LINUX := $(OBJS)
-
 BINS = test runtime_test test_dbg runtime_test_dbg
 
 all: clean $(BINS)
 
 # Platform-specific rules
+# TODO: Linux/WIN
 ifeq ($(OS),Windows_NT) # Windows
 
 libutils.a: $(OBJS_WIN)
 	ar rcs $@ $^
 
 libutils.so: $(OBJS_WIN)
-	$(CC) $(FLAGS_WIN) -fPIC -shared -o $@ $^
+	$(CC) $(FLAGS) -fPIC -shared -o $@ $^
 
 test: test.c libutils.a
-	$(CC) $(FLAGS_WIN) -o $@ $^ -L. -lutils
+	$(CC) $(FLAGS) $(LIBS) -o $@ $^
 
 test_dbg: test.c libutils.a
-	$(CC) $(FLAGS_WIN) -o $@ $^ -L. -lutils -g
+	$(CC) $(FLAGS) $(LIBS) -o $@ $^ -g
 
-runtime_test: test.c
-	$(CC) $(FLAGS_WIN) -o $@ $^ -L. -lutils
+runtime_test: test.c libutils.so
+	$(CC) $(FLAGS) -o $@ $?
 
-runtime_test_dbg: test.c
-	$(CC) $(FLAGS_WIN) -o $@ $^ -L. -lutils -g
+runtime_test_dbg: test.c libutils.so
+	$(CC) $(FLAGS) -o $@ $? -g
 
 clean:
-	rm -f $(BINS) $(OBJS_WIN) *.o libutils.a
+	rm -f $(BINS) $(OBJS_WIN) *.o libutils.a libutils.so
 	rm -rf *.dSYM
 
 else ifeq ($(shell uname),Darwin) # macOS
 
+SRCS_OBJC += $(wildcard ./src/*.m)
+SRCS += $(SRCS_OBJC)
+OBJS += $(patsubst %.m, %.m.o, $(SRCS_OBJC))
+FLAGS += -framework Cocoa
+
 # objective c
 %.m.o: %.m
-	$(CC) -c $< -o $@
+	$(CC) -x objective-c -c $< -o $@
 
-libutils.a: $(OBJS_OSX)
+libutils.a: $(OBJS)
 	ar rcs $@ $^
 
-libutils.so: $(OBJS_OSX)
-	$(CC) $(FLAGS_OSX) -fPIC -shared -o $@ $^
+libutils.dylib: $(SRCS)
+	$(CC) $(FLAGS) -dynamiclib -o $@ $^
 
 test: test.c libutils.a
-	$(CC) $(FLAGS_OSX) -o $@ $< -L. -lutils
+	$(CC) $(FLAGS) $(LIBS) -o $@ $<
 
 test_dbg: test.c libutils.a
-	$(CC) $(FLAGS_OSX) -o $@ $< -L. -lutils -g
+	$(CC) $(FLAGS) $(LIBS) -o $@ $< -g
 
-runtime_test: test.c
-	$(CC) $(FLAGS_OSX) -o $@ $^ -L. -lutils
+runtime_test: test.c libutils.dylib
+	$(CC) $(FLAGS) -o $@ $?
 
-runtime_test_dbg: test.c
-	$(CC) $(FLAGS_OSX) -o $@ $^ -L. -lutils -g
+runtime_test_dbg: test.c libutils.dylib
+	$(CC) $(FLAGS) -o $@ $? -g
 
 clean:
-	rm -f $(BINS) $(OBJS_OSX) *.o libutils.a
+	rm -f $(BINS) $(OBJS) *.o libutils.a libutils.dylib
 	rm -rf *.dSYM
 
 else # Linux (assumed)
@@ -77,25 +76,25 @@ libutils.a: $(OBJS_LINUX)
 	ar rcs $@ $^
 
 libutils.so: $(OBJS_LINUX)
-	$(CC) $(FLAGS_LINUX) -fPIC -shared -o $@ $^
+	$(CC) $(FLAGS) -fPIC -shared -o $@ $^
 
 test: test.c libutils.a
-	$(CC) $(FLAGS_LINUX) -o $@ $< -L. -lutils
+	$(CC) $(FLAGS) $(LIBS) -o $@ $<
 
 test_dbg: test.c libutils.a
-	$(CC) $(FLAGS_LINUX) -o $@ $< -L. -lutils -g
+	$(CC) $(FLAGS) $(LIBS) -o $@ $< -g
 
-runtime_test: test.c
-	$(CC) $(FLAGS_LINUX) -o $@ $^ -L. -lutils
+runtime_test: test.c libutils.so
+	$(CC) $(FLAGS) -o $@ $^
 
-runtime_test_dbg: test.c
-	$(CC) $(FLAGS_LINUX) -o $@ $^ -L. -lutils -g
+runtime_test_dbg: test.c libutils.so
+	$(CC) $(FLAGS) -o $@ $^ -g
 
 clean:
 	rm -f $(BINS) $(OBJS_LINUX) *.o libutils.a
 	rm -rf *.dSYM
 endif
-#
+
 # Rules to build object files from C source files
 %.o: %.c
-	$(CC) $(FLAGS) -c $< -o $@
+	$(CC) -std=c99 -c $< -o $@

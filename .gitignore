@@ -6,6 +6,8 @@ utils
 *.a
 *.o
 *.so
+*.dylib
+*.dll
 *.dSYM/
 runtime_test
 test
